@@ -15,7 +15,7 @@ import java.util.List;
 public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
 
     private static final String SQL_STATEMENT_TO_FIND_MOVIE_SHOWINGS_IN_ALL_BRANCHES =
-    "select movie.* from movie_event, room, cinemabranch,movie " +
+    "select distinct movie.* from movie_event, room, cinemabranch,movie " +
             "where movie_event.room_id = room.room_id AND movie_event.movie_id = movie.movie_id " +
             "AND room.cinema_branch = cinemabranch.cinema_id";
 

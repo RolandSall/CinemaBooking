@@ -1,11 +1,9 @@
 package com.roland.movietheater_jdbc.controller.movie;
 
 import com.roland.movietheater_jdbc.model.Movie;
-import com.roland.movietheater_jdbc.service.MovieService.FailedToDeleteMovieException;
-import com.roland.movietheater_jdbc.service.MovieService.FailedToInsertMovieException;
-import com.roland.movietheater_jdbc.service.MovieService.FailedToUpdateMovieException;
-import com.roland.movietheater_jdbc.service.MovieService.MovieService;
+import com.roland.movietheater_jdbc.service.MovieService.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.origin.SystemEnvironmentOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +29,17 @@ public class MovieController {
         List<Movie> movieList = movieService.findAllMovies();
         List<MovieApiResponseForAdmin> responseList = buildResponse(movieList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
+    }
+
+    @GetMapping("/admin/movies/{movieId}")
+    public ResponseEntity getMovieById(@PathVariable("movieId") int movieId) {
+        try {
+            Movie movieById = movieService.findMovieById(movieId);
+            MovieApiResponseForAdmin responseList = getMovieApiResponse(movieById);
+            return ResponseEntity.status(HttpStatus.OK).body(responseList);
+        } catch (FailedToFindMovieExcpetion e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
+        }
     }
 
 

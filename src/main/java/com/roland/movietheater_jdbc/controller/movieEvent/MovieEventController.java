@@ -48,8 +48,6 @@ public class MovieEventController {
         }
 
 
-
-
     }
 
     private MovieEvent getMovieEvent(MovieEventApiRequestForAdminAndUser request, int cinemaId, int roomId, int movieId) {

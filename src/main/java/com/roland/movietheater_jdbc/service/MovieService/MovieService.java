@@ -27,6 +27,11 @@ public class MovieService implements IMovieService {
         return movieRepository.deleteMovieInBranch(movieId);
     }
 
+    @Override
+    public Movie findMovieById(int movieId) throws FailedToFindMovieExcpetion {
+        return  movieRepository.findMovieById(movieId);
+    }
+
     public Movie updateMovieInBranch(int movieId, Movie movie) throws FailedToUpdateMovieException {
         return movieRepository.updateMovieInBranch(movieId, movie);
     }

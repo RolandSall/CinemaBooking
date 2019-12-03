@@ -1,15 +1,13 @@
-package com.roland.movietheater_jdbc.model;
+package com.roland.movietheater_jdbc.controller.movieRating;
 
 import lombok.*;
-
-import java.util.Date;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MovieRatingForm {
+public class MovieRatingApiRequestForAdminAndUser {
     private  int customerId;
     private  int movieId;
     private String customerUserName;

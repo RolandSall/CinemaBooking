@@ -34,7 +34,6 @@ public class CinemaController {
 
 
     @GetMapping("/cinemas")
-    @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<CinemaBranchApiResponseForUser>> getCinemaBranchForUser() {
         List<CinemaBranch> cinemaBranches = cinemaService.findAllCinemaBranch();
         List<CinemaBranchApiResponseForUser> responseList = buildResponseForUser(cinemaBranches);

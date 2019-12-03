@@ -17,5 +17,7 @@ public class Customer {
     private String customerEmail;
     private String customerGender;
     private String customerAddress;
+    private String customerUsername;
+    private String customerPassword;
 
 }

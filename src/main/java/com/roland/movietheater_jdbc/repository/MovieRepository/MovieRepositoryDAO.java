@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.repository.MovieRepository;
 
 import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.service.MovieService.FailedToDeleteMovieException;
+import com.roland.movietheater_jdbc.service.MovieService.FailedToFindMovieExcpetion;
 import com.roland.movietheater_jdbc.service.MovieService.FailedToInsertMovieException;
 import com.roland.movietheater_jdbc.service.MovieService.FailedToUpdateMovieException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
     private static final String SQL_STATEMENT_TO_UPDATE_MOVIE_IN_BRANCH =
             "update movie set  movie_name = ? , movie_genre = ? , movie_duration= ? , movie_description = ? , movie_releaseDate = ? , movie_directors = ? , movie_stars = ? , movie_urlImage = ? , movie_urlPosterImage= ? where movie_id = ?";
 
+
+    private static final String  SQL_STATEMENT_FIND_MOVIE_BY_ID = "select * from movie where movie_id = ? ";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -39,6 +43,22 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
         List<Movie> movieAtCurrentCinemaList = jdbcTemplate.query(SQL_STATEMENT_TO_FIND_ALL_MOVIES, new MovieMapper());
 
         return movieAtCurrentCinemaList;
+
+    }
+
+    @Override
+    public Movie findMovieById(int movieId) throws FailedToFindMovieExcpetion {
+        try {
+            List<Movie> movieAtCurrentCinemaList =  jdbcTemplate.query(SQL_STATEMENT_FIND_MOVIE_BY_ID, new MovieMapper() , movieId);
+            if(movieAtCurrentCinemaList.get(0).equals(null))
+                return null;
+            else
+              return movieAtCurrentCinemaList.get(0);
+
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            throw new FailedToFindMovieExcpetion(e, movieId);
+        }
 
     }
 
@@ -103,6 +123,8 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
             throw new FailedToUpdateMovieException(e, movieId);
         }
     }
+
+
 
 
 }

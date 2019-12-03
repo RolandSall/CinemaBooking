@@ -12,5 +12,7 @@ public interface IMovieService {
 
      int deleteMovieInBranch( int movieId) throws FailedToDeleteMovieException;
 
+     Movie findMovieById(int movieId) throws FailedToFindMovieExcpetion;
+
      Movie updateMovieInBranch( int  movieId, Movie movie) throws FailedToUpdateMovieException;
 }
