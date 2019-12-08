@@ -1,5 +1,6 @@
 package com.roland.movietheater_jdbc.repository.MovieEventRepository;
 
+import com.roland.movietheater_jdbc.model.CineRoomMovieEvent;
 import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.model.MovieEvent;
 import com.roland.movietheater_jdbc.service.MovieEventService.FailedToCreateMovieEventException;
@@ -19,4 +20,5 @@ public interface IMovieEventRepositoryDAO {
     List<MovieEvent> getMovieEventTiming(int roomId);
 
 
+    List<CineRoomMovieEvent> getCineRoomMovieEvent(int cinemaId, int roomId);
 }

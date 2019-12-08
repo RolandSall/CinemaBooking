@@ -1,6 +1,8 @@
 package com.roland.movietheater_jdbc.controller.movieEvent;
 
 import com.roland.movietheater_jdbc.controller.movie.MovieApiResponseForAdmin;
+import com.roland.movietheater_jdbc.model.CineMovieEvent;
+import com.roland.movietheater_jdbc.model.CineRoomMovieEvent;
 import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.model.MovieEvent;
 import com.roland.movietheater_jdbc.service.CinemaService.CinemaService;
@@ -26,8 +28,6 @@ public class MovieEventController {
     public MovieEventController(MovieEventService movieEventService) {
         this.movieEventService = movieEventService;
 
-
-
     }
 
     @GetMapping("/movieEvent")
@@ -44,8 +44,19 @@ public class MovieEventController {
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
+    @GetMapping("/admin/showing/cinemas/{cinemaId}/rooms/{roomId}")
+    public ResponseEntity getAllMovieEventInCurrentRoom(@PathVariable("cinemaId") int cinemaId,
+                                                        @PathVariable("roomId") int roomId){
 
-   @DeleteMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/movies/{movieId}/movieEvents/{movieEventId}")
+        List<CineRoomMovieEvent> cineRoomMovieEventList = movieEventService.getCineRoomMovieEvent(cinemaId,roomId);
+        List<CineRoomMovieEventApiResponseForAdmin> responseList = buildCineEventMovieResponse(cineRoomMovieEventList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseList);
+    }
+
+
+
+
+    @DeleteMapping("/admin/showing/cinemas/{cinemaId}/rooms/{roomId}/movies/{movieId}/movieEvents/{movieEventId}")
     public  ResponseEntity deleteMovieEvent(@PathVariable("cinemaId") int cinemaId,
                                             @PathVariable("roomId") int roomId,
                                             @PathVariable("movieId") int movieId,
@@ -131,5 +142,25 @@ public class MovieEventController {
                 .movieReleaseDate(movie.getMovieReleaseDate())
                 .build();
 
+    }
+
+    private List<CineRoomMovieEventApiResponseForAdmin> buildCineEventMovieResponse(List<CineRoomMovieEvent> cineRoomMovieEventList) {
+        List<CineRoomMovieEventApiResponseForAdmin> responseList = new ArrayList<>();
+        for (CineRoomMovieEvent cineRoomMovieEvent : cineRoomMovieEventList) {
+            responseList.add(getCineRoomMovieApiResponse(cineRoomMovieEvent));
+        }
+
+        return responseList;
+    }
+
+    private CineRoomMovieEventApiResponseForAdmin getCineRoomMovieApiResponse(CineRoomMovieEvent cineRoomMovieEvent) {
+        return new CineRoomMovieEventApiResponseForAdmin().builder()
+                .movieName(cineRoomMovieEvent.getMovieName())
+                .movieId(cineRoomMovieEvent.getMovieId())
+                .roomId(cineRoomMovieEvent.getRoomId())
+                .movieEventId(cineRoomMovieEvent.getMovieEventId())
+                .movieStartTime(cineRoomMovieEvent.getMovieStartTime())
+                .movieEndTime(cineRoomMovieEvent.getMovieEndTime())
+                .build();
     }
 }

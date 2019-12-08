@@ -1,5 +1,6 @@
 package com.roland.movietheater_jdbc.service.MovieEventService;
 
+import com.roland.movietheater_jdbc.model.CineRoomMovieEvent;
 import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.model.MovieEvent;
 import com.roland.movietheater_jdbc.repository.MovieEventRepository.IMovieEventRepositoryDAO;
@@ -33,5 +34,10 @@ public class MovieEventService implements IMovieEventService {
     @Override
     public List<MovieEvent> getMovieEventTiming(int movieId) {
         return movieEventRepository.getMovieEventTiming(movieId);
+    }
+
+    @Override
+    public List<CineRoomMovieEvent> getCineRoomMovieEvent(int cinemaId, int roomId) {
+        return movieEventRepository.getCineRoomMovieEvent(cinemaId,roomId);
     }
 }

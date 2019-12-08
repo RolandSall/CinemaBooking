@@ -1,5 +1,6 @@
 package com.roland.movietheater_jdbc.repository.MovieEventRepository;
 
+import com.roland.movietheater_jdbc.model.CineRoomMovieEvent;
 import com.roland.movietheater_jdbc.model.CinemaBranch;
 import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.model.MovieEvent;
@@ -29,6 +30,10 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
 
     private static final String SQL_STATEMENT_TO_GET_MOVEI_EVENT_TIMING =
             "select * from movie_event where movie_id = ?";
+
+    private static final String SQL_STATEMENT_TO_FIND_MOVIE_SHOWING_IN_A_ROOM_THAT_BELONGS_TO_CINEMABRANCH=
+          "select M.movie_name , ME.*   from movie_event ME, movie M where ME.movie_id = M.movie_id and room_id = ?";
+
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -77,6 +82,14 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
     public List<MovieEvent> getMovieEventTiming(int movieId) {
         List<MovieEvent> movieEventTimings = jdbcTemplate.query(SQL_STATEMENT_TO_GET_MOVEI_EVENT_TIMING, new  MovieEventMapper(), movieId);
         return movieEventTimings;
+    }
+
+    @Override
+    public List<CineRoomMovieEvent> getCineRoomMovieEvent(int cinemaId, int roomId) {
+        List<CineRoomMovieEvent> cineRoomMovieEvents = jdbcTemplate.query(SQL_STATEMENT_TO_FIND_MOVIE_SHOWING_IN_A_ROOM_THAT_BELONGS_TO_CINEMABRANCH,
+                new CineRoomMovieEventMapper(), roomId);
+
+        return cineRoomMovieEvents;
     }
 
 
