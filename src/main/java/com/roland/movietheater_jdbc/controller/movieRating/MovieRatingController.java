@@ -42,7 +42,7 @@ public class MovieRatingController {
         return ResponseEntity.status(HttpStatus.OK).body(ratingDeleted);
     }
 
-    @PostMapping("movies/{movieId}")
+
 
     private List<MovieRatingApiResponseForUser> buildResponseForUser(List<MovieRatingForm> movieRatingFormList) {
         List<MovieRatingApiResponseForUser> responseList = new ArrayList<>();

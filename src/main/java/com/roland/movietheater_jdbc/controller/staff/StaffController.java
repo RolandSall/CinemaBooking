@@ -1,10 +1,7 @@
 package com.roland.movietheater_jdbc.controller.staff;
 
 import com.roland.movietheater_jdbc.model.Staff;
-import com.roland.movietheater_jdbc.service.StaffService.FailedToCreateStaffInCinemaBranch;
-import com.roland.movietheater_jdbc.service.StaffService.FailedToDeleteStaffInCinemaBranch;
-import com.roland.movietheater_jdbc.service.StaffService.FailedToUpdateStaffInCinemaBranch;
-import com.roland.movietheater_jdbc.service.StaffService.StaffService;
+import com.roland.movietheater_jdbc.service.StaffService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +27,17 @@ public class StaffController {
         List<StaffApiResponseForAdmin> responseList = buildResponse(staffList);
        return ResponseEntity.status(HttpStatus.OK).body(responseList);
 
+    }
+
+    @GetMapping("/admin/cinemas/{cinemaId}/staff/{staffId}")
+    public ResponseEntity getStaffInCinemaBranchById(@PathVariable("cinemaId") int cinemaId , @PathVariable("staffId") int staffId){
+        try {
+            Staff staff = staffService.getStaffInCinemaBranchById(cinemaId,staffId);
+            StaffApiResponseForAdmin response = getStaffApiRepsonse(staff);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToFindStaffInCinemaBranchException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping("/admin/cinemas/{cinemaId}/staffs")

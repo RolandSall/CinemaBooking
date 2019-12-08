@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.repository.RoomRepository;
 
 import com.roland.movietheater_jdbc.model.Room;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToDeleteRoomInCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToUpdateRoomInCinemaBranchException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,10 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
     private static final String SQL_STATEMENT_TO_UPDATE_ROOM_IN_CINEMA=
             "update room set room_capacity = ? , room_type = ? , room_status = ? , cinema_branch =? where room_id = ? ";
 
+
+    private static final String SQL_STATEMENT_TO_FIND_ROOM_IN_CINEMA_BRANCH_BY_ID =
+    "select * from room where cinema_branch = ? and room_id = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -35,6 +40,16 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
         return jdbcTemplate.query(SQL_STATEMENT_TO_FIND_ROOM_IN_CINEMA, new RoomMapper(), cinemaId);
 
 
+    }
+
+    @Override
+    public Room getRoomInCinemaBranch(int cinemaId, int roomId) throws FailedToFindRoomInCinemaBranchException {
+        try {
+            Room room = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_ROOM_IN_CINEMA_BRANCH_BY_ID, new RoomMapper(), cinemaId ,roomId);
+            return room;
+        } catch (DataAccessException e) {
+            throw new FailedToFindRoomInCinemaBranchException("Room not Found !");
+        }
     }
 
     @Override
@@ -86,5 +101,7 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
 
         return room;
     }
+
+
 
 }

@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.repository.RoomRepository;
 
 import com.roland.movietheater_jdbc.model.Room;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToDeleteRoomInCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToUpdateRoomInCinemaBranchException;
 
@@ -17,4 +18,6 @@ public interface IRoomRepositoryDAO {
     int deleteRoomInBranch(int cinemaId, int roomId) throws FailedToDeleteRoomInCinemaBranchException;
 
     Room updateRoomInBranch(int cinemaId, int roomId, Room room) throws FailedToUpdateRoomInCinemaBranchException;
+
+    Room getRoomInCinemaBranch(int cinemaId, int roomId) throws FailedToFindRoomInCinemaBranchException;
 }

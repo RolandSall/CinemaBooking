@@ -13,4 +13,6 @@ public interface IRoomService {
     int deleteRoomInBranch(int cinemaId, int roomId) throws FailedToDeleteRoomInCinemaBranchException;
 
     Room updateRoomInBranch(int cinemaId, int roomId, Room room) throws FailedToUpdateRoomInCinemaBranchException;
+
+    Room getRoomInCinemaBranchById(int cinemaId, int roomId) throws FailedToFindRoomInCinemaBranchException;
 }

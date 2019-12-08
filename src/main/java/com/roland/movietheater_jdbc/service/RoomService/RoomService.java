@@ -32,4 +32,9 @@ public class RoomService implements IRoomService {
     public Room updateRoomInBranch(int cinemaId, int roomId, Room room) throws FailedToUpdateRoomInCinemaBranchException {
         return  roomRepository.updateRoomInBranch(cinemaId,roomId,room);
     }
+
+    @Override
+    public Room getRoomInCinemaBranchById(int cinemaId, int roomId) throws FailedToFindRoomInCinemaBranchException {
+        return roomRepository.getRoomInCinemaBranch(cinemaId,roomId);
+    }
 }

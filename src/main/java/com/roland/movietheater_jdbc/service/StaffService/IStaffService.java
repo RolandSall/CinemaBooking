@@ -12,4 +12,6 @@ public interface IStaffService {
     String deleteStaffInCinemaBranch(int cinemaId, int staffId) throws FailedToDeleteStaffInCinemaBranch;
 
     Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch;
+
+    Staff getStaffInCinemaBranchById(int cinemaId, int staffId) throws FailedToFindStaffInCinemaBranchException;
 }

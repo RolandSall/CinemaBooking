@@ -37,4 +37,9 @@ public class StaffService implements IStaffService {
     public Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch {
         return  staffRepository.updateStaffInCinemaBranch(cinemaId,staffId, staff);
     }
+
+    @Override
+    public Staff getStaffInCinemaBranchById(int cinemaId, int staffId) throws FailedToFindStaffInCinemaBranchException {
+        return  staffRepository.getStaffCinemaBranchById(cinemaId,staffId);
+    }
 }

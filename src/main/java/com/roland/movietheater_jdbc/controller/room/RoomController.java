@@ -32,6 +32,19 @@ public class RoomController {
 
     }
 
+    @GetMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}")
+    public ResponseEntity getRoomInCinemaBranchById(@PathVariable("cinemaId") int cinemaId, @PathVariable("roomId") int roomId){
+        try {
+            Room room = roomService.getRoomInCinemaBranchById(cinemaId,roomId);
+            RoomApiResponseForAdmin response = getRoomApiResponse(room);
+            return  ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToFindRoomInCinemaBranchException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+
+
+    }
+
     @PostMapping("/admin/cinemas/{cinemaId}/rooms")
     public ResponseEntity createRoomInBranch(@PathVariable("cinemaId") int cinemaId ,@RequestBody RoomApiRequestForAdmin request){
         try {

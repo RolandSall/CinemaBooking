@@ -3,6 +3,7 @@ package com.roland.movietheater_jdbc.repository.StaffRepository;
 import com.roland.movietheater_jdbc.model.Staff;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToCreateStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToDeleteStaffInCinemaBranch;
+import com.roland.movietheater_jdbc.service.StaffService.FailedToFindStaffInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToUpdateStaffInCinemaBranch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +26,7 @@ public class StaffRepositoryDAO implements IStaffRepositoryDAO {
 
     private static final String SQL_STATEMENT_TO_UPDATE_STAFF_IN_CINEMA =" update staff set staff_fname = ? , staff_lname = ? , staff_phone = ?, staff_address =?  , staff_role = ?, cinema_id = ?  where staff_id = ?";
 
+    private static final String SQL_STATEMENT_TO_FIND_STAFF_IN_CINEMA_BRANCH_BY_ID ="select * from staff where cinema_id = ? and staff_id = ?";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -90,6 +92,16 @@ public class StaffRepositoryDAO implements IStaffRepositoryDAO {
         }
 
         return staff;
+    }
+
+    @Override
+    public Staff getStaffCinemaBranchById(int cinemaId, int staffId) throws FailedToFindStaffInCinemaBranchException {
+        try {
+            Staff staff = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_STAFF_IN_CINEMA_BRANCH_BY_ID, new StaffMapper(), cinemaId,staffId);
+            return staff;
+        } catch (Exception e) {
+           throw new FailedToFindStaffInCinemaBranchException("Staff Not Found !");
+        }
     }
 
 
