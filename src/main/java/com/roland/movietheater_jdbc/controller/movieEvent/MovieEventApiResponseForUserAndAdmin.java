@@ -16,6 +16,7 @@ public class MovieEventApiResponseForUserAndAdmin {
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date movieEndTime;
+    private int movieEventId;
     private int roomId;
     private int movieId;
 }

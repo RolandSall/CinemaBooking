@@ -24,4 +24,14 @@ public class MovieEventService implements IMovieEventService {
     public MovieEvent createMovieEvent(MovieEvent movieEvent) throws FailedToCreateMovieEventException {
         return movieEventRepository.createMovieEvent(movieEvent);
     }
+
+    @Override
+    public String deleteMovieEvent(int cinemaId, int roomId, int movieId) throws FailedToDeleteMovieEventException {
+        return movieEventRepository.deleteMovieEvent(cinemaId,roomId,movieId);
+    }
+
+    @Override
+    public List<MovieEvent> getMovieEventTiming(int movieId) {
+        return movieEventRepository.getMovieEventTiming(movieId);
+    }
 }

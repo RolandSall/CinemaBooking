@@ -11,4 +11,8 @@ public interface IMovieEventService {
     List<Movie> findAllMovieEvents();
 
     MovieEvent createMovieEvent(MovieEvent movieEvent) throws FailedToCreateMovieEventException;
+
+    String  deleteMovieEvent(int cinemaId, int roomId , int movieId) throws  FailedToDeleteMovieEventException;
+
+    List<MovieEvent> getMovieEventTiming(int movieId);
 }

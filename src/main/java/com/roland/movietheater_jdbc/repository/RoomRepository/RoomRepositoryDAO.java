@@ -41,7 +41,6 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
     public Room createRoomInBranch(Room room) throws FailedToInsertRoomInCinemaBranchException {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_ROOM_IN_CINEMA,
-                    room.getRoomId(),
                     room.getRoomCapacity(),
                     room.getRoomType(),
                     room.isRoomStatus(),
@@ -60,7 +59,10 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_ROOM_IN_CINEMA,roomId);
             return roomId;
+
+
         } catch (DataAccessException e) {
+            System.out.println(e.getMessage());
             throw  new FailedToDeleteRoomInCinemaBranchException(e,cinemaId,roomId);
         }
     }
@@ -68,12 +70,15 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
     @Override
     public Room updateRoomInBranch(int cinemaId, int roomId, Room room) throws FailedToUpdateRoomInCinemaBranchException {
         try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_ROOM_IN_CINEMA,
+
+          jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_ROOM_IN_CINEMA,
                     room.getRoomCapacity(),
                     room.getRoomType(),
                     room.isRoomStatus(),
-                    room.getCinemaId(),
-                    room.getRoomId());
+                    cinemaId,
+                    roomId);
+
+
         } catch (DataAccessException e) {
             System.out.println(e.getMessage());
             throw new FailedToUpdateRoomInCinemaBranchException(e,cinemaId,roomId);

@@ -112,7 +112,7 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
                     movie.getMovieStars(),
                     movie.getMovieUrlImage(),
                     movie.getMovieUrlPosterImage(),
-                    movie.getMovieId());
+                    movieId);
 
             movie.setMovieId(movieId);
 

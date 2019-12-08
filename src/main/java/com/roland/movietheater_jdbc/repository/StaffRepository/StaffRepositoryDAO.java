@@ -1,9 +1,9 @@
 package com.roland.movietheater_jdbc.repository.StaffRepository;
 
 import com.roland.movietheater_jdbc.model.Staff;
-import com.roland.movietheater_jdbc.service.CinemaService.FailedToInsertCinemaException;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToCreateStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToDeleteStaffInCinemaBranch;
+import com.roland.movietheater_jdbc.service.StaffService.FailedToUpdateStaffInCinemaBranch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -22,7 +22,8 @@ public class StaffRepositoryDAO implements IStaffRepositoryDAO {
 
     private static final String SQL_STATEMENT_TO_DELETE_STAFF_IN_CINEMA = "delete from staff where staff_id =?";
 
-    private static final String SQL_STATEMENT_TO_FIND_LAST_STAFF_ID_INSERTED = "";
+
+    private static final String SQL_STATEMENT_TO_UPDATE_STAFF_IN_CINEMA =" update staff set staff_fname = ? , staff_lname = ? , staff_phone = ?, staff_address =?  , staff_role = ?, cinema_id = ?  where staff_id = ?";
 
 
     @Autowired
@@ -68,6 +69,27 @@ public class StaffRepositoryDAO implements IStaffRepositoryDAO {
             System.out.println(e.getCause());
             throw new FailedToDeleteStaffInCinemaBranch(e, cinemaId, staffId);
         }
+    }
+
+    @Override
+    public Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch {
+
+        try {
+            jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_STAFF_IN_CINEMA,
+                    staff.getStaffFirstName(),
+                    staff.getStaffLastName(),
+                    staff.getStaffPhone(),
+                    staff.getStaffAddress(),
+                    staff.getStaffRole(),
+                    cinemaId,
+                    staffId);
+        } catch (DataAccessException e) {
+            System.out.println(e.getMessage());
+            System.out.println(e.getCause());
+            throw  new FailedToUpdateStaffInCinemaBranch(e,cinemaId,staffId);
+        }
+
+        return staff;
     }
 
 

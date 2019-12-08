@@ -6,4 +6,7 @@ public class FailedToDeleteMovieEventException extends Exception {
         super("Failed to deleted movie event where movieId: " + movieId + "in roomId: " + roomId, e);
     }
 
-    }
+}
+
+
+

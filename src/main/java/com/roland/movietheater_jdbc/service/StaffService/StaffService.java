@@ -32,4 +32,9 @@ public class StaffService implements IStaffService {
     public String deleteStaffInCinemaBranch(int cinemaId, int staffId) throws FailedToDeleteStaffInCinemaBranch {
         return  staffRepository.deleteStaffInCinemaBranch(cinemaId,staffId);
     }
+
+    @Override
+    public Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch {
+        return  staffRepository.updateStaffInCinemaBranch(cinemaId,staffId, staff);
+    }
 }

@@ -3,6 +3,7 @@ package com.roland.movietheater_jdbc.controller.staff;
 import com.roland.movietheater_jdbc.model.Staff;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToCreateStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToDeleteStaffInCinemaBranch;
+import com.roland.movietheater_jdbc.service.StaffService.FailedToUpdateStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,18 @@ public class StaffController {
 
     }
 
+    @PutMapping("/admin/cinemas/{cinemaId}/staffs/{staffId}")
+    public ResponseEntity updateStaffInCinemaBranch(@PathVariable("cinemaId") int cinemaId, @PathVariable("staffId") int staffId, @RequestBody StaffApiRequestForAdmin request){
+        try {
+            Staff staff = staffService.updateStaffInCinemaBranch(cinemaId, staffId, getStaff(request));
+            StaffApiResponseForAdmin response = getStaffApiRepsonse(staff);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToUpdateStaffInCinemaBranch e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+    }
+
 
 
 
@@ -64,7 +77,6 @@ public class StaffController {
                 .staffPhone(request.getStaffPhone())
                 .staffAddress(request.getStaffAddress())
                 .staffRole(request.getStaffRole())
-
                 .build();
     }
 
