@@ -26,8 +26,8 @@ public class MovieEventService implements IMovieEventService {
     }
 
     @Override
-    public String deleteMovieEvent(int cinemaId, int roomId, int movieId) throws FailedToDeleteMovieEventException {
-        return movieEventRepository.deleteMovieEvent(cinemaId,roomId,movieId);
+    public String deleteMovieEvent(int cinemaId, int roomId, int movieId, int movieEvent) throws FailedToDeleteMovieEventException {
+        return movieEventRepository.deleteMovieEvent(cinemaId,roomId,movieId, movieEvent);
     }
 
     @Override

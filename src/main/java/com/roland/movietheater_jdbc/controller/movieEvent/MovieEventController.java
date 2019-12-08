@@ -5,6 +5,7 @@ import com.roland.movietheater_jdbc.model.Movie;
 import com.roland.movietheater_jdbc.model.MovieEvent;
 import com.roland.movietheater_jdbc.service.CinemaService.CinemaService;
 import com.roland.movietheater_jdbc.service.MovieEventService.FailedToCreateMovieEventException;
+import com.roland.movietheater_jdbc.service.MovieEventService.FailedToDeleteMovieEventException;
 import com.roland.movietheater_jdbc.service.MovieEventService.MovieEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,13 +19,13 @@ import java.util.List;
 public class MovieEventController {
 
     private MovieEventService movieEventService;
-    private CinemaService cinemaService;
+
 
 
     @Autowired
-    public MovieEventController(MovieEventService movieEventService, CinemaService cinemaService) {
+    public MovieEventController(MovieEventService movieEventService) {
         this.movieEventService = movieEventService;
-        this.cinemaService = cinemaService;
+
 
 
     }
@@ -44,25 +45,25 @@ public class MovieEventController {
     }
 
 
-
-/*    @DeleteMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/movies/{movieId}")
+   @DeleteMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/movies/{movieId}/movieEvents/{movieEventId}")
     public  ResponseEntity deleteMovieEvent(@PathVariable("cinemaId") int cinemaId,
                                             @PathVariable("roomId") int roomId,
-                                            @PathVariable("movieId") int movieId
-                                            ){
+                                            @PathVariable("movieId") int movieId,
+                                            @PathVariable("movieEventId") int movieEvent){
 
         try {
-          String movieEventRemoved = movieEventService.deleteMovieEvent(cinemaId,roomId,movieId);
+          String movieEventRemoved = movieEventService.deleteMovieEvent(cinemaId,roomId,movieId,movieEvent);
           return  ResponseEntity.status(HttpStatus.OK).body(movieEventRemoved);
         } catch (FailedToDeleteMovieEventException e) {
           return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
-    }*/
+    }
 
     @PostMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/movies/{movieId}")
-    public ResponseEntity createMovieEvent(@PathVariable("cinemaId") int cinemaId, @PathVariable("roomId") int roomId, @PathVariable("movieId") int movieId,
-                                           @RequestBody MovieEventApiRequestForAdminAndUser request) {
+    public ResponseEntity createMovieEvent(@PathVariable("cinemaId") int cinemaId,
+                                           @PathVariable("roomId") int roomId, @PathVariable("movieId") int movieId,
+                                           @RequestBody MovieEventApiRequestForAdmin request) {
         try {
 
             MovieEvent movieEvent = movieEventService.createMovieEvent(getMovieEvent(request, cinemaId, roomId, movieId));
@@ -97,11 +98,10 @@ public class MovieEventController {
                 .build();
     }
 
-    private MovieEvent getMovieEvent(MovieEventApiRequestForAdminAndUser request, int cinemaId, int roomId, int movieId) {
+    private MovieEvent getMovieEvent(MovieEventApiRequestForAdmin request, int cinemaId, int roomId, int movieId) {
         return new MovieEvent().builder()
                 .movieId(movieId)
                 .roomId(roomId)
-
                 .movieStartTime(request.getMovieStartTime())
                 .movieEndTime(request.getMovieEndTime())
                 .build();

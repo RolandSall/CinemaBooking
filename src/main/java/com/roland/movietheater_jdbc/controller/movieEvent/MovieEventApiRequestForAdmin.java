@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MovieEventApiRequestForAdminAndUser {
+public class MovieEventApiRequestForAdmin {
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")

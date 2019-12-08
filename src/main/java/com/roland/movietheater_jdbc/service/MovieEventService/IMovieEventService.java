@@ -12,7 +12,7 @@ public interface IMovieEventService {
 
     MovieEvent createMovieEvent(MovieEvent movieEvent) throws FailedToCreateMovieEventException;
 
-    String  deleteMovieEvent(int cinemaId, int roomId , int movieId) throws  FailedToDeleteMovieEventException;
+    String  deleteMovieEvent(int id, int cinemaId, int roomId, int movieId) throws  FailedToDeleteMovieEventException;
 
     List<MovieEvent> getMovieEventTiming(int movieId);
 }

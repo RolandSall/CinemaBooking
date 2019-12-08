@@ -12,11 +12,12 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class MovieEventApiResponseForUserAndAdmin {
+    private int movieEventId;
+    private int roomId;
+    private int movieId;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date movieEndTime;
-    private int movieEventId;
-    private int roomId;
-    private int movieId;
+
 }

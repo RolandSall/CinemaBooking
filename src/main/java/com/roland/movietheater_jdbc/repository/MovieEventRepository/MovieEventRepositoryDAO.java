@@ -25,7 +25,7 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
             "Insert into movie_event (movie_id,room_id, movie_start_time, movie_end_time) values (?,?,?,?)";
 
     private static final String SQL_STATEMENT_TO_DELETE_A_MOVIE_EVENT_IN_A_CINEMABRANCH
-            ="delete from movie_event where movie_id = ? AND room_id = ?  AND movie_eventId = ? ";
+            ="DELETE FROM movie_event WHERE movie_eventId = ?  and movie_id = ? and  room_id = ? ";
 
     private static final String SQL_STATEMENT_TO_GET_MOVEI_EVENT_TIMING =
             "select * from movie_event where movie_id = ?";
@@ -60,17 +60,17 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
     }
 
     @Override
-    public String deleteMovieEvent(int cinemaId, int roomId, int movieId) throws FailedToDeleteMovieEventException {
+    public String deleteMovieEvent(int cinemaId, int roomId, int movieId, int movieEvent) throws FailedToDeleteMovieEventException {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_A_MOVIE_EVENT_IN_A_CINEMABRANCH,
-                            roomId,movieId);
+                            movieEvent,movieId,roomId);
         } catch (DataAccessException e) {
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             throw  new FailedToDeleteMovieEventException(e, roomId, movieId);
         }
 
-        return  "Removed movie event where movieId: " + movieId + "in roomId: " + roomId;
+        return  "Removed movie event where movieId: " + movieId + " in roomId: " + roomId + " Where movie event Id was:  " + movieEvent;
     }
 
     @Override
@@ -79,9 +79,5 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
         return movieEventTimings;
     }
 
-    @Override
-    public List<CinemaBranch> getCinemaHostingMovieEvent(int movieId) {
-        return null;
-    }
 
 }
