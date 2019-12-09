@@ -8,8 +8,8 @@ import lombok.*;
 @Setter
 @Builder
 public class SeatApiRequestForAdmin {
-    private int seatRow;
-    private int seatColumn;
+
+
     private boolean seatStatus;
 
 

@@ -61,6 +61,8 @@ public class RoomRepositoryDAO implements IRoomRepositoryDAO {
                     room.isRoomStatus(),
                     room.getCinemaId());
 
+
+
             return  room;
         } catch (DataAccessException e) {
             System.out.println(e.getMessage());

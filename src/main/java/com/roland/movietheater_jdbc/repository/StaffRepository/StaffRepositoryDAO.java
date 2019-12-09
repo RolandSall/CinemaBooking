@@ -35,8 +35,6 @@ public class StaffRepositoryDAO implements IStaffRepositoryDAO {
             "select * from staff where cinema_id = ? and staff_id = ?";
 
 
-    private static final String SQL_STATEMENT_TO_CHECK_IF_STAFF_EXIST_IN_CINEMA =
-            "SELECT * FROM cinemabooking.staff where cinema_id = ? and staff_id = ?;";
 
     @Autowired
     JdbcTemplate jdbcTemplate;

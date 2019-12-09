@@ -15,7 +15,7 @@ public interface ISeatService {
 
     Seat getSeatInRoomById(int cinemaId, int roomId, int seatId) throws FailedToFindSeatInCinemaBranchRoom;
 
-    Seat createSeatInRoom(int cinemaId, int roomId, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom;
+    List<Seat> createSeatInRoom(int cinemaId, int roomId, int roomCapacity, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom;
 
     Seat reserveSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToReserveSeatInCinemaBranch;
 

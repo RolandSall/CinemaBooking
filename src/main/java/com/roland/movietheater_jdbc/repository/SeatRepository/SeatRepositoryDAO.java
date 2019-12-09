@@ -32,12 +32,9 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
             "delete from seat where roomId_seat = ? and seat_id = ?";
 
 
+
     private static final String SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM =
-            "update seat set roomId_seat = ? , seat_row = ? , seat_column = ? , seat_status = ?  where seat_id = ?";
-
-
-    private static final String SQL_STATEMENT_TO_RESERVE_A_SEAT_IN_A_ROOM =
-            "update seat set seat_status = ?  where seat_id = ?";
+            "update seat set seat_status = ? where roomId_seat =? and seat_id = ?";
 
     private static final String SQL_STATEMENT_TO_DELETE_ALL_SEATS_IN_ROOM =
             "delete from seat where roomId_seat = ?";
@@ -100,7 +97,7 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
             jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_ALL_SEATS_IN_ROOM
                     , roomId
                     );
-            return "Seats in Room: " + roomId + " From Branch: " + cinemaId  +" Has Been Removed";
+            return "All Seats in Room: " + roomId + " From Branch: " + cinemaId  +" Has Been Removed";
         } catch (DataAccessException e) {
             throw new FailedToDeleteSeatInCinemaBranchRoom(cinemaId, roomId);
         }
@@ -117,7 +114,7 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
                     , seat.getSeatColumn()
                     , seat.isSeatStatus());
 
-            seat.setRoomId(roomId);
+
             return seat;
         } catch (DataAccessException e) {
             throw new FailedToCreateSeatInCinemaBranchRoom(cinemaId, roomId);
@@ -128,8 +125,9 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
     @Override
     public Seat reserveSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToReserveSeatInCinemaBranch {
         try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_IN_A_ROOM
+            jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM
                     , seat.isSeatStatus()
+                    ,roomId
                     , seatId);
 
             return seat;
@@ -142,10 +140,8 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
     public Seat updateSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToUpdateSeatInCinemaBranchRoom {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM
+                    ,seat.isSeatStatus()
                     , roomId
-                    , seat.getSeatRow()
-                    , seat.getSeatColumn()
-                    , seat.isSeatStatus()
                     , seatId);
 
             return seat;

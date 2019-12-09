@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.controller.room;
 
 import com.roland.movietheater_jdbc.model.Room;
 import com.roland.movietheater_jdbc.service.RoomService.*;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToCreateSeatInCinemaBranchRoom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +53,9 @@ public class RoomController {
             RoomApiResponseForAdmin response = getRoomApiResponse(room);
             return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (FailedToInsertRoomInCinemaBranchException e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (FailedToCreateSeatInCinemaBranchRoom e) {
+
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
 
