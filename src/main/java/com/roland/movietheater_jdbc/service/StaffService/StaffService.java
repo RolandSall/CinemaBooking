@@ -2,6 +2,8 @@ package com.roland.movietheater_jdbc.service.StaffService;
 
 import com.roland.movietheater_jdbc.model.Staff;
 import com.roland.movietheater_jdbc.repository.StaffRepository.StaffRepositoryDAO;
+import com.roland.movietheater_jdbc.service.CinemaService.FailedToFindCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +32,10 @@ public class StaffService implements IStaffService {
 
     @Override
     public String deleteStaffInCinemaBranch(int cinemaId, int staffId) throws FailedToDeleteStaffInCinemaBranch {
-        return  staffRepository.deleteStaffInCinemaBranch(cinemaId,staffId);
+       return  staffRepository.deleteStaffInCinemaBranch(cinemaId,staffId);
     }
+
+
 
     @Override
     public Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch {
@@ -42,4 +46,6 @@ public class StaffService implements IStaffService {
     public Staff getStaffInCinemaBranchById(int cinemaId, int staffId) throws FailedToFindStaffInCinemaBranchException {
         return  staffRepository.getStaffCinemaBranchById(cinemaId,staffId);
     }
+
+
 }

@@ -1,6 +1,8 @@
 package com.roland.movietheater_jdbc.repository.StaffRepository;
 
 import com.roland.movietheater_jdbc.model.Staff;
+import com.roland.movietheater_jdbc.service.CinemaService.FailedToFindCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToCreateStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToDeleteStaffInCinemaBranch;
 import com.roland.movietheater_jdbc.service.StaffService.FailedToFindStaffInCinemaBranchException;
@@ -19,4 +21,6 @@ public interface IStaffRepositoryDAO {
     Staff updateStaffInCinemaBranch(int cinemaId, int staffId, Staff staff) throws FailedToUpdateStaffInCinemaBranch;
 
     Staff getStaffCinemaBranchById(int cinemaId, int staffId) throws FailedToFindStaffInCinemaBranchException;
+
+
 }

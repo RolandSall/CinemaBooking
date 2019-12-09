@@ -1,6 +1,8 @@
 package com.roland.movietheater_jdbc.service.StaffService;
 
 import com.roland.movietheater_jdbc.model.Staff;
+import com.roland.movietheater_jdbc.service.CinemaService.FailedToFindCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 
 import java.util.List;
 

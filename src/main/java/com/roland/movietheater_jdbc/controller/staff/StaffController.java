@@ -1,6 +1,8 @@
 package com.roland.movietheater_jdbc.controller.staff;
 
 import com.roland.movietheater_jdbc.model.Staff;
+import com.roland.movietheater_jdbc.service.CinemaService.FailedToFindCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.StaffService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,7 @@ public class StaffController {
 
     }
 
-    @GetMapping("/admin/cinemas/{cinemaId}/staff/{staffId}")
+    @GetMapping("/admin/cinemas/{cinemaId}/staffs/{staffId}")
     public ResponseEntity getStaffInCinemaBranchById(@PathVariable("cinemaId") int cinemaId , @PathVariable("staffId") int staffId){
         try {
             Staff staff = staffService.getStaffInCinemaBranchById(cinemaId,staffId);
