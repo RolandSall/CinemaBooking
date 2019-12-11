@@ -14,5 +14,5 @@ public class SeatApiResponseForAdmin {
 
     private int seatColumn;
 
-    private boolean seatStatus;
+
 }

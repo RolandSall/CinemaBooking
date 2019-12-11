@@ -3,14 +3,14 @@ package com.roland.movietheater_jdbc.controller.booking;
 import com.roland.movietheater_jdbc.model.CineMovieEvent;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
+import com.roland.movietheater_jdbc.model.Seat;
 import com.roland.movietheater_jdbc.service.BookingService.BookingService;
+import com.roland.movietheater_jdbc.service.Customer.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,36 +20,59 @@ public class BookingController {
     public BookingService bookingService;
 
     @Autowired
-    public  BookingController(BookingService bookingService){
-    this.bookingService = bookingService;
+    public BookingController(BookingService bookingService) {
+        this.bookingService = bookingService;
+
     }
 
 
     @GetMapping("/booking/movies/{movieId}")
     public ResponseEntity getCinemaBranchHostingMovieById(@PathVariable("movieId") int movieId) {
-        List<CineMovieEvent>  cineMovieEventList = bookingService.getCinemaBranchHostingByMovieId(movieId);
+        List<CineMovieEvent> cineMovieEventList = bookingService.getCinemaBranchHostingByMovieId(movieId);
         List<CineMovieEventApiResponseForUser> responseList = buildCinemaBranchHostingByIdResponse(cineMovieEventList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
 
     }
 
     @GetMapping("/booking/movies/{movieId}/cinemas/{cinemaId}")
-    public ResponseEntity getRoomTimingHostingMovieByMovieIdAndCinemaId(@PathVariable("movieId") int movieId, @PathVariable("cinemaId") int cinemaId){
-        List<CineMovieEventRoomTiming> cineMovieEventRoomTimingList = bookingService.getRoomTimingHostingMovieByMovieIdAndCinemaId(movieId,cinemaId);
+    public ResponseEntity getRoomTimingHostingMovieByMovieIdAndCinemaId(@PathVariable("movieId") int movieId, @PathVariable("cinemaId") int cinemaId) {
+        List<CineMovieEventRoomTiming> cineMovieEventRoomTimingList = bookingService.getRoomTimingHostingMovieByMovieIdAndCinemaId(movieId, cinemaId);
         List<CineMovieEventRoomTimingApiResponseForUser> responseList = buildRoomTimingForMovieEventInBranch(cineMovieEventRoomTimingList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
     @GetMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/rooms/{roomId}")
-    public ResponseEntity getSeatsAvailableForMovieEvent(@PathVariable("movieId") int movieId,
-                                                         @PathVariable("cinemaId") int cinemaId, @PathVariable("roomId") int roomId){
+    public ResponseEntity getSeatAllSeatsForMovieEvent(@PathVariable("movieId") int movieId
+            , @PathVariable("cinemaId") int cinemaId
+            , @PathVariable("roomId") int roomId) {
 
-        List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList = bookingService.getSeatsAvailableForMovieEvent(movieId,cinemaId,roomId);
+        List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList = bookingService.getSeatAllSeatsForMovieEvent(movieId, cinemaId, roomId);
         List<CineMovieEventRoomSeatApiResponseForUser> responseList = getSeatsAvailableForMovieEventApiResponse(cineMovieEventRoomSeatList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
-    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/rooms/{roomId}")
+    @PutMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/rooms/{roomId}/seat/{seatId}/user/{userId}")
+    public ResponseEntity reserveSeatForUser(@PathVariable("movieId") int movieId
+            , @PathVariable("cinemaId") int cinemaId
+            , @PathVariable("roomId") int roomId
+            , @PathVariable("seatId") int seatId
+            , @PathVariable("userId") int userID
+            , @PathVariable("ticketPrice") double ticketPrice){
+
+
+        // String seatReserved = bookingService.reserveSeatForUser(cinemaId,roomId,seatId,userID, ticketPrice);
+
+
+
+
+
+
+        return null;
+
+    }
+
+
+
 
     private List<CineMovieEventRoomSeatApiResponseForUser> getSeatsAvailableForMovieEventApiResponse(List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList) {
         List<CineMovieEventRoomSeatApiResponseForUser> responseList = new ArrayList<>();
@@ -61,13 +84,14 @@ public class BookingController {
     }
 
     private CineMovieEventRoomSeatApiResponseForUser getSeatsAvailableForMovieEvent(CineMovieEventRoomSeat cineMovieEventRoomSeat) {
-        return  new CineMovieEventRoomSeatApiResponseForUser().builder()
+        return new CineMovieEventRoomSeatApiResponseForUser().builder()
                 .cinemaId(cineMovieEventRoomSeat.getCinemaId())
                 .movieEventId(cineMovieEventRoomSeat.getMovieEventId())
                 .seatId(cineMovieEventRoomSeat.getSeatId())
                 .roomIdOfSeat(cineMovieEventRoomSeat.getRoomIdOfSeat())
                 .seatRow(cineMovieEventRoomSeat.getSeatRow())
-                .seatStatus(cineMovieEventRoomSeat.isSeatStatus())
+                .seatColumn(cineMovieEventRoomSeat.getSeatColumn())
+
                 .build();
 
     }
@@ -81,7 +105,6 @@ public class BookingController {
 
         return responseList;
     }
-
 
 
     private CineMovieEventRoomTimingApiResponseForUser getRoomTimingForMovieEventInBranch(CineMovieEventRoomTiming cineMovieEventRoomTiming) {
@@ -106,7 +129,7 @@ public class BookingController {
     }
 
     private CineMovieEventApiResponseForUser getCinemaBranchHostingByIdResponse(CineMovieEvent cineMovieEvent) {
-        return  new CineMovieEventApiResponseForUser().builder()
+        return new CineMovieEventApiResponseForUser().builder()
                 .cinemaId(cineMovieEvent.getCinemaId())
                 .movieId(cineMovieEvent.getMovieId())
                 .cinemaName(cineMovieEvent.getCinemaName())

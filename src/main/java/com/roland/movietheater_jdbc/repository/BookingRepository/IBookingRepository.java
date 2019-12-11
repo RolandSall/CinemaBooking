@@ -14,5 +14,7 @@ public interface IBookingRepository {
 
     List<CineMovieEventRoomTiming> getRoomTimingHostingMovieByMovieIdAndCinemaId(int movieId, int cinemaId);
 
-    List<CineMovieEventRoomSeat> getSeatsAvailableForMovieEvent(int movieId, int cinemaId, int roomId);
+    List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId, int roomId);
+
+    String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID);
 }

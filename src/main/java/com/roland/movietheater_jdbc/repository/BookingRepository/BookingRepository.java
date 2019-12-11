@@ -20,12 +20,17 @@ public class BookingRepository implements   IBookingRepository {
     private static final String  SQL_STATEMENT_TO_FIND_ROOM_TIMING_HOSTING_MOVIE_BY_ID_IN_CINEMA_BRANCH =
             "select C.cinema_id, ME.* from movie_event ME, room R, cinemabranch C  where ME.room_id = R.room_id And C.cinema_id = R.cinema_branch And movie_id = ? And cinema_id = ? ";
 
-    private static final String SQL_STATEMENT_TO_FIND_SEATS_AVAILABLE_FOR_MOVIE_EVENT =
+    private static final String SQL_STATEMENT_TO_FIND_SEATS_IN_ROOM_FOR_MOVIE_EVENT =
             "select C.cinema_id, ME.movie_eventId , S.* from movie_event ME, room R, cinemabranch C , seat S" +
                     " where ME.room_id = R.room_id " +
                     " And C.cinema_id = R.cinema_branch" +
                     " And S.roomId_seat = R.room_id " +
-                    " And movie_id = ? And cinema_id = ? And R.room_id = ?  group by seat_id";
+                    " And movie_id = ? And cinema_id = ? And R.room_id = ?";
+
+
+    private static final String SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT ="";
+
+
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -42,7 +47,12 @@ public class BookingRepository implements   IBookingRepository {
     }
 
     @Override
-    public List<CineMovieEventRoomSeat> getSeatsAvailableForMovieEvent(int movieId, int cinemaId, int roomId) {
-        return  jdbcTemplate.query(SQL_STATEMENT_TO_FIND_SEATS_AVAILABLE_FOR_MOVIE_EVENT, new CineMovieEventRoomSeatMapper(),movieId,cinemaId,roomId);
+    public List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId, int roomId) {
+        return  jdbcTemplate.query(SQL_STATEMENT_TO_FIND_SEATS_IN_ROOM_FOR_MOVIE_EVENT, new CineMovieEventRoomSeatMapper(),movieId,cinemaId,roomId);
+    }
+
+    @Override
+    public String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID) {
+        return null;
     }
 }

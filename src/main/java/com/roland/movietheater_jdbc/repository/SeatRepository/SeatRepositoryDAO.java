@@ -18,23 +18,15 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
             "SELECT * FROM seat where roomId_seat = ?";
 
     private static final String SQL_STATEMENT_TO_FIND_ALL_SEATS_AVAILABLE_IN_A_ROOM =
-            "SELECT * FROM seat where seat_status = true and roomId_seat = ? ";
+            "SELECT * FROM seat where roomId_seat = ? ";
 
 
     private static final String SQL_STATEMENT_TO_FIND_SEAT_IN_ROOM_BY_ID =
             "SELECT * FROM seat where roomId_seat = ? and seat_id = ?";
 
     private static final String SQL_STATEMENT_TO_CREATE_A_SEAT_IN_A_ROOM =
-            "INSERT INTO seat (roomId_seat,seat_row,seat_column,seat_status) values (?,?,?,?)";
+            "INSERT INTO seat (roomId_seat,seat_row,seat_column) values (?,?,?)";
 
-
-    private static final String SQL_STATEMENT_TO_DELETE_A_SEAT_IN_A_ROOM =
-            "delete from seat where roomId_seat = ? and seat_id = ?";
-
-
-
-    private static final String SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM =
-            "update seat set seat_status = ? where roomId_seat =? and seat_id = ?";
 
     private static final String SQL_STATEMENT_TO_DELETE_ALL_SEATS_IN_ROOM =
             "delete from seat where roomId_seat = ?";
@@ -80,16 +72,24 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
 
 
     @Override
-    public int deleteSeatInRoom(int cinemaId, int roomId, int seatId) throws FailedToDeleteSeatInCinemaBranchRoom {
+    public Seat createSeatInRoom(int cinemaId, int roomId, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom {
         try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_A_SEAT_IN_A_ROOM
-                    , roomId
-                    , seatId);
-            return seatId;
+            jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_A_SEAT_IN_A_ROOM,
+                    roomId
+                    , seat.getSeatRow()
+                    , seat.getSeatColumn()
+            );
+
+
+            return seat;
         } catch (DataAccessException e) {
-            throw new FailedToDeleteSeatInCinemaBranchRoom(cinemaId, roomId, seatId);
+            System.out.println(e.getMessage());
+            throw new FailedToCreateSeatInCinemaBranchRoom(cinemaId, roomId);
         }
+
     }
+
+
 
     @Override
     public String deleteAllSeatsInRoom(int cinemaId, int roomId) throws FailedToDeleteSeatInCinemaBranchRoom {
@@ -105,51 +105,8 @@ public class SeatRepositoryDAO implements ISeatRepositoryDAO {
 
 
 
-    @Override
-    public Seat createSeatInRoom(int cinemaId, int roomId, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom {
-        try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_A_SEAT_IN_A_ROOM,
-                    roomId
-                    , seat.getSeatRow()
-                    , seat.getSeatColumn()
-                    , seat.isSeatStatus());
 
 
-            return seat;
-        } catch (DataAccessException e) {
-            throw new FailedToCreateSeatInCinemaBranchRoom(cinemaId, roomId);
-        }
-
-    }
-
-    @Override
-    public Seat reserveSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToReserveSeatInCinemaBranch {
-        try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM
-                    , seat.isSeatStatus()
-                    ,roomId
-                    , seatId);
-
-            return seat;
-        } catch (DataAccessException e) {
-            throw new FailedToReserveSeatInCinemaBranch(cinemaId, roomId, seat.getSeatId());
-        }
-    }
-
-    @Override
-    public Seat updateSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToUpdateSeatInCinemaBranchRoom {
-        try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_UPDATE_A_SEAT_IN_A_ROOM
-                    ,seat.isSeatStatus()
-                    , roomId
-                    , seatId);
-
-            return seat;
-        } catch (DataAccessException e) {
-            throw new FailedToUpdateSeatInCinemaBranchRoom(cinemaId, roomId, seat.getSeatId());
-        }
-
-    }
 
 
 

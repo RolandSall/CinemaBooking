@@ -17,7 +17,7 @@ public class SeatMapper implements RowMapper<Seat> {
        seat.setRoomId(resultSet.getInt("roomId_seat"));
        seat.setSeatRow(resultSet.getInt("seat_row"));
        seat.setSeatColumn(resultSet.getInt("seat_column"));
-       seat.setSeatStatus(resultSet.getBoolean("seat_status"));
+
 
        return seat;
 

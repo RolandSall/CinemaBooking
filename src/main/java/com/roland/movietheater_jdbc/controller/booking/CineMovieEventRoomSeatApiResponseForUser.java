@@ -13,6 +13,7 @@ public class CineMovieEventRoomSeatApiResponseForUser {
     int seatId;
     int roomIdOfSeat;
     int seatRow;
-    boolean seatStatus;
+    int seatColumn;
+
 
 }

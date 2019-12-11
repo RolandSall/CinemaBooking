@@ -12,11 +12,8 @@ import java.util.List;
 @Builder
 public class Ticket {
     private int tickedId;
-    private Date tickedDate;
-    private int ticketPrice;
-    private int numberOfParticipants;
     private int customerId;
-    private List<Seat> seatReservedList;
+    private double ticketPrice;
 
 
 }

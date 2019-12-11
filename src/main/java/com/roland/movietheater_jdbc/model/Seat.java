@@ -14,5 +14,5 @@ public class Seat {
     private int roomId;
     private int seatRow;
     private int seatColumn;
-    private boolean seatStatus;
+
 }

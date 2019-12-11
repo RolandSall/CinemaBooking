@@ -1,8 +1,10 @@
 package com.roland.movietheater_jdbc.controller.seat;
 
 import com.roland.movietheater_jdbc.model.Seat;
-import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
-import com.roland.movietheater_jdbc.service.SeatService.*;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToCreateSeatInCinemaBranchRoom;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToDeleteSeatInCinemaBranchRoom;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToFindSeatInCinemaBranchRoom;
+import com.roland.movietheater_jdbc.service.SeatService.SeatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,20 +59,6 @@ public class SeatController {
     }
 
 
-/*    @DeleteMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/seats/{seatId}")
-    public ResponseEntity deleteSeatInRoom(@PathVariable("cinemaId") int cinemaId,
-                                           @PathVariable("roomId") int roomId,
-                                           @PathVariable("seatId") int seatId) {
-
-        try {
-            int seatIdDeleted = seatService.deleteSeatInRoom(cinemaId, roomId, seatId);
-            return ResponseEntity.status(HttpStatus.OK).body(seatIdDeleted);
-        } catch (FailedToDeleteSeatInCinemaBranchRoom e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
-    }*/
-
-
     @DeleteMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/seats")
     public ResponseEntity deleteAllSeatsInRoom(@PathVariable("cinemaId") int cinemaId,
                                                @PathVariable("roomId") int roomId) {
@@ -85,65 +73,19 @@ public class SeatController {
 
 
     @PostMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/{roomCapacity}/seats")
-    public ResponseEntity createSeatInRoom(@PathVariable("cinemaId") int cinemaId,
-                                           @PathVariable("roomId") int roomId,
-                                           @PathVariable("roomCapacity") int roomCapacity,
-                                           @RequestBody SeatApiRequestForAdmin request) {
+    public ResponseEntity createSeatsInRoom(@PathVariable("cinemaId") int cinemaId,
+                                            @PathVariable("roomId") int roomId,
+                                            @PathVariable("roomCapacity") int roomCapacity
+    ) {
 
         try {
-            List<Seat> seatList = seatService.createSeatInRoom(cinemaId, roomId,roomCapacity,getSeat(request));
+            List<Seat> seatList = seatService.createSeatsInRoom(cinemaId, roomId, roomCapacity);
             List<SeatApiResponseForAdmin> responseList = buildSeatListResponseForAdmin(seatList);
             return ResponseEntity.status(HttpStatus.OK).body(responseList);
         } catch (FailedToCreateSeatInCinemaBranchRoom e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
-
-    }
-
-    @PutMapping("cinemas/{cinemaId}/rooms/{roomId}/seats/{seatId}")
-    public ResponseEntity reserveSeatInRoom(@PathVariable("cinemaId") int cinemaId,
-                                            @PathVariable("roomId") int roomId,
-                                            @PathVariable("seatId") int seatId,
-                                            @RequestBody SeatApiRequestForUser request) {
-
-        try {
-
-            Seat seat = seatService.reserveSeatInRoom(cinemaId, roomId, seatId, getSeat(request));
-            SeatApiResponseForUser response = getSeatApiResponseForUser(seat);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (FailedToReserveSeatInCinemaBranch e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
-
-    }
-
-
-    @PutMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}/seats/{seatId}")
-    public ResponseEntity updateSeatInRoom(@PathVariable("cinemaId") int cinemaId,
-                                           @PathVariable("roomId") int roomId,
-                                           @PathVariable("seatId") int seatId,
-                                           @RequestBody SeatApiRequestForAdmin request) {
-
-        try {
-            Seat seat = seatService.updateSeatInRoom(cinemaId, roomId, seatId, getSeat(request));
-            SeatApiResponseForAdmin response = getSeatApiResponseForAdmin(seat);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (FailedToUpdateSeatInCinemaBranchRoom e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
         }
-    }
 
-
-    private Seat getSeat(SeatApiRequestForAdmin request) {
-        return new Seat().builder()
-                .seatStatus(request.isSeatStatus())
-                .build();
-    }
-
-    private Seat getSeat(SeatApiRequestForUser request) {
-        return new Seat().builder()
-                .seatStatus(request.isSeatStatus())
-                .build();
     }
 
 
@@ -162,16 +104,12 @@ public class SeatController {
                 .seatId(seat.getSeatId())
                 .seatRow(seat.getSeatRow())
                 .seatColumn(seat.getSeatColumn())
-                .seatStatus(seat.isSeatStatus())
                 .build();
+
 
     }
 
-    private SeatApiResponseForUser getSeatApiResponseForUser(Seat seat) {
-        return new SeatApiResponseForUser().builder()
-                .seatStatus(seat.isSeatStatus())
-                .build();
-    }
+
 
 
 }

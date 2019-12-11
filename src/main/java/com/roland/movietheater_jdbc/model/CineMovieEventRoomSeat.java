@@ -13,6 +13,7 @@ public class CineMovieEventRoomSeat {
     int seatId;
     int roomIdOfSeat;
     int seatRow;
-    boolean seatStatus;
+    int seatColumn;
+
 
 }

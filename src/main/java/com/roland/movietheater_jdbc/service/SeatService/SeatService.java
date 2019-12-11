@@ -27,21 +27,9 @@ public class SeatService implements  ISeatService {
         return seatRepositoryDAO.getAllSeatsInRoomForAdmin(cinemaId,roomId);
     }
 
-
-
     @Override
     public List<Seat> getAllSeatsInRoomForUser(int cinemaId, int roomId) {
         return seatRepositoryDAO.getAllSeatsInRoomForUser(cinemaId,roomId);
-    }
-
-    @Override
-    public String deleteAllSeatsInRoom(int cinemaId, int roomId) throws FailedToDeleteSeatInCinemaBranchRoom {
-        return seatRepositoryDAO.deleteAllSeatsInRoom(cinemaId,roomId);
-    }
-
-    @Override
-    public int deleteSeatInRoom(int cinemaId, int roomId, int seatId) throws FailedToDeleteSeatInCinemaBranchRoom {
-        return seatRepositoryDAO.deleteSeatInRoom(cinemaId,roomId,seatId);
     }
 
     @Override
@@ -49,35 +37,35 @@ public class SeatService implements  ISeatService {
         return seatRepositoryDAO.getSeatInRoomById(cinemaId,roomId,seatId);
     }
 
+
     @Override
-    public List<Seat> createSeatInRoom(int cinemaId, int roomId, int roomCapacity, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom {
-        return  createSeatsInRoom(cinemaId,roomId,roomCapacity,seat);
+    public List<Seat> createSeatsInRoom(int cinemaId, int roomId, int roomCapacity) throws FailedToCreateSeatInCinemaBranchRoom {
+        return  createSeatsInRoomLoop(cinemaId,roomId,roomCapacity);
 
     }
 
-    @Override
-    public Seat reserveSeatInRoom(int cinemaId, int roomId,int seatId, Seat seat) throws FailedToReserveSeatInCinemaBranch {
-        return seatRepositoryDAO.reserveSeatInRoom(cinemaId,roomId, seatId,seat);
-    }
 
     @Override
-    public Seat updateSeatInRoom(int cinemaId, int roomId, int seatId, Seat seat) throws FailedToUpdateSeatInCinemaBranchRoom {
-        return seatRepositoryDAO.updateSeatInRoom(cinemaId,roomId, seatId ,seat);
+    public String deleteAllSeatsInRoom(int cinemaId, int roomId) throws FailedToDeleteSeatInCinemaBranchRoom {
+        return seatRepositoryDAO.deleteAllSeatsInRoom(cinemaId,roomId);
     }
 
-       private List<Seat> createSeatsInRoom(int cinemaId, int roomId, int roomCapacity, Seat seat) throws FailedToCreateSeatInCinemaBranchRoom {
+
+       private List<Seat> createSeatsInRoomLoop(int cinemaId, int roomId, int roomCapacity) throws FailedToCreateSeatInCinemaBranchRoom {
 
        if (roomCapacity == 50 || roomCapacity == 100)
-           return createSeat(cinemaId,roomId,roomCapacity,seat, 10);
+           return createSeat(cinemaId,roomId,roomCapacity, 10);
          else
-          return createSeat(cinemaId,roomId,roomCapacity,seat, 20);
+          return createSeat(cinemaId,roomId,roomCapacity, 20);
 
 
 
     }
 
-    private List<Seat> createSeat(int cinemaId, int roomId, int roomCapacity, Seat seat, int nb) throws FailedToCreateSeatInCinemaBranchRoom {
+    private List<Seat> createSeat(int cinemaId, int roomId, int roomCapacity, int nb) throws FailedToCreateSeatInCinemaBranchRoom {
         List<Seat> seatList = new ArrayList<>();
+        Seat seat = new Seat();
+
         for (int counter = 0; counter < roomCapacity; counter++) {
             int seatRow = counter / nb;
             int seatColumn = counter % nb;
