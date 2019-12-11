@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.service.CinemaService;
 
 import com.roland.movietheater_jdbc.model.CinemaBranch;
 import com.roland.movietheater_jdbc.repository.CinemaRepository.ICinemaRepositoryDAO;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +36,10 @@ public class CinemaService implements ICinemaService {
         return cinemaRepository.updateCinemaBranch(cinemaId,cinemaBranch);
     }
 
+    @Override
+    public void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException {
+        cinemaRepository.updateCinemaCapacity(roomCapacity,cinemaId);
+    }
 
 
 }

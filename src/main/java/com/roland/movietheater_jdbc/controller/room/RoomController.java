@@ -67,7 +67,7 @@ public class RoomController {
         try {
             int roomIdDeleted = roomService.deleteRoomInBranch(cinemaId,roomId);
             return ResponseEntity.status(HttpStatus.OK).body(roomIdDeleted);
-        } catch (FailedToDeleteRoomInCinemaBranchException e) {
+        } catch (FailedToDeleteRoomInCinemaBranchException | FailedToFindRoomInCinemaBranchException | FailedToInsertRoomInCinemaBranchException e) {
             return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

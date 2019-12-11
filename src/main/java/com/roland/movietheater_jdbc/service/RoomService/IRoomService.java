@@ -11,7 +11,7 @@ public interface IRoomService {
 
     Room createRoomInBranch(Room room) throws FailedToInsertRoomInCinemaBranchException, FailedToCreateSeatInCinemaBranchRoom;
 
-    int deleteRoomInBranch(int cinemaId, int roomId) throws FailedToDeleteRoomInCinemaBranchException;
+    int deleteRoomInBranch(int cinemaId, int roomId) throws FailedToDeleteRoomInCinemaBranchException, FailedToFindRoomInCinemaBranchException, FailedToInsertRoomInCinemaBranchException;
 
     Room updateRoomInBranch(int cinemaId, int roomId, Room room) throws FailedToUpdateRoomInCinemaBranchException;
 

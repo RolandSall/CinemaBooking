@@ -4,6 +4,7 @@ import com.roland.movietheater_jdbc.model.CinemaBranch;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToDeleteCinemaException;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToInsertCinemaException;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToUpdateCinemaException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface ICinemaRepositoryDAO {
     List<CinemaBranch> findAllCinemasBranch();
 
     CinemaBranch updateCinemaBranch(int id, CinemaBranch cinemaId) throws FailedToUpdateCinemaException;
+
+    void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException;
 }

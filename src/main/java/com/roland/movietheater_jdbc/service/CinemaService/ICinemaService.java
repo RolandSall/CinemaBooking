@@ -1,6 +1,7 @@
 package com.roland.movietheater_jdbc.service.CinemaService;
 
 import com.roland.movietheater_jdbc.model.CinemaBranch;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
 
 import java.util.List;
 
@@ -13,4 +14,6 @@ public interface ICinemaService {
      int deleteCinemaBranch(int cinemaId) throws FailedToDeleteCinemaException;
 
      CinemaBranch updateCinemaBranch(int  cinemaId, CinemaBranch cinemaBranch) throws FailedToUpdateCinemaException;
+
+    void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException;
 }
