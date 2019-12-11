@@ -15,12 +15,14 @@ public class CineMovieEventRoomSeatMapper implements RowMapper<CineMovieEventRoo
     public CineMovieEventRoomSeat mapRow(ResultSet resultSet, int i) throws SQLException {
         CineMovieEventRoomSeat cineMovieEventRoomSeat = new CineMovieEventRoomSeat();
         cineMovieEventRoomSeat.setCinemaId(resultSet.getInt("cinema_id"));
-        cineMovieEventRoomSeat.setMovieEventId(resultSet.getInt("movie_eventId"));
+        cineMovieEventRoomSeat.setMovieEventId(resultSet.getInt("movie_eventID"));
+        cineMovieEventRoomSeat.setBookingId(resultSet.getInt("booking_id"));
         cineMovieEventRoomSeat.setSeatId(resultSet.getInt("seat_id"));
         cineMovieEventRoomSeat.setRoomIdOfSeat(resultSet.getInt("roomId_seat"));
         cineMovieEventRoomSeat.setSeatRow(resultSet.getInt("seat_row"));
         cineMovieEventRoomSeat.setSeatColumn(resultSet.getInt("seat_column"));
-
+        cineMovieEventRoomSeat.setSeatStatus(resultSet.getBoolean("seat_status"));
+        cineMovieEventRoomSeat.setBookingDate(resultSet.getTimestamp("booking_date"));
         return cineMovieEventRoomSeat;
     }
 }

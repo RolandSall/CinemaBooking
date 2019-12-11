@@ -45,20 +45,23 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID, double ticketPrice) throws FailedToFindAccountException {
-        if (isUser(userID)) {
-            int tickedIdGenerated = ticketService.createTicket(userID,ticketPrice);
-            return bookingRepository.reserveSeatForUser(cinemaId, roomId, seatId, userID);
+    public String reserveSeatForUser(int movieId ,int cinemaId, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException {
+        if (isUser(userId)) {
+            int tickedIdGenerated = ticketService.createTicket(userId,ticketPrice);
+            System.out.println(tickedIdGenerated);
+            return bookingRepository.reserveSeatForUser(cinemaId, roomId, seatId,tickedIdGenerated , userId);
 
         }
 
-    else
-        return " User Not Found ! Please Register before Booking ! ";
+        else
+            return " User Not Found ! Please Register Before Booking ! ";
 
     }
 
+
     private boolean isUser(int userID) throws FailedToFindAccountException {
         Customer customer = customerService.getCustomerById(userID);
+            System.out.println(customer.getCustomerUsername());
             if (customer.getCustomerUsername().equals(null))
                 return false;
             else

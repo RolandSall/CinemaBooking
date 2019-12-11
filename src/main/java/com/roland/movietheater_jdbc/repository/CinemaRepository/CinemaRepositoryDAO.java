@@ -79,7 +79,7 @@ public class CinemaRepositoryDAO implements ICinemaRepositoryDAO {
     @Override
     public void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException {
         try {
-            System.out.println("Entered");
+
             Integer sumOfSeatsInCinemaBranch = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_THE_SUM_OF_SEATS_IN_A_CINEMA,Integer.class,cinemaId);
             if(sumOfSeatsInCinemaBranch ==null) {
                 sumOfSeatsInCinemaBranch =roomCapacity;

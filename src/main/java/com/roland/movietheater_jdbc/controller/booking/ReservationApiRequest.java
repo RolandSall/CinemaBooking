@@ -11,4 +11,5 @@ public class ReservationApiRequest {
     int seatID;
     boolean seatStatus;
 
+
 }

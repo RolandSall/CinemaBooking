@@ -6,6 +6,7 @@ import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
 import com.roland.movietheater_jdbc.model.Seat;
 import com.roland.movietheater_jdbc.service.BookingService.BookingService;
 import com.roland.movietheater_jdbc.service.Customer.CustomerService;
+import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,20 +52,22 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
-    @PutMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/rooms/{roomId}/seat/{seatId}/user/{userId}")
+    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/rooms/{roomId}/seat/{seatId}/user/{userId}/{ticketPrice}")
     public ResponseEntity reserveSeatForUser(@PathVariable("movieId") int movieId
             , @PathVariable("cinemaId") int cinemaId
             , @PathVariable("roomId") int roomId
             , @PathVariable("seatId") int seatId
-            , @PathVariable("userId") int userID
+            , @PathVariable("userId") int userId
             , @PathVariable("ticketPrice") double ticketPrice){
 
 
-        // String seatReserved = bookingService.reserveSeatForUser(cinemaId,roomId,seatId,userID, ticketPrice);
+        try {
+            String  seatReserved = bookingService.reserveSeatForUser(movieId,cinemaId,roomId,seatId, userId, ticketPrice);
+            System.out.println(seatReserved);
 
-
-
-
+        } catch (FailedToFindAccountException e) {
+            e.printStackTrace();
+        }
 
 
         return null;
@@ -87,11 +90,13 @@ public class BookingController {
         return new CineMovieEventRoomSeatApiResponseForUser().builder()
                 .cinemaId(cineMovieEventRoomSeat.getCinemaId())
                 .movieEventId(cineMovieEventRoomSeat.getMovieEventId())
-                .seatId(cineMovieEventRoomSeat.getSeatId())
                 .roomIdOfSeat(cineMovieEventRoomSeat.getRoomIdOfSeat())
+                .seatId(cineMovieEventRoomSeat.getSeatId())
+                .bookingId(cineMovieEventRoomSeat.getBookingId())
                 .seatRow(cineMovieEventRoomSeat.getSeatRow())
                 .seatColumn(cineMovieEventRoomSeat.getSeatColumn())
-
+                .seatStatus(cineMovieEventRoomSeat.isSeatStatus())
+                .bookingDate(cineMovieEventRoomSeat.getBookingDate())
                 .build();
 
     }
