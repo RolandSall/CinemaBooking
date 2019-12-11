@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class TicketRepositoryDAO implements ITicketRepositoryDAO {
 
-    private static final String SQL_STATEMENT_TO_CREATE_A_TICKET = "INSERT INTO ticket (customer_id, price) VALUES (?,?)";
+    private static final String SQL_STATEMENT_TO_CREATE_A_TICKET = "INSERT INTO ticket (customer_id, ticket_price) VALUES (?,?)";
 
     private static final String SQL_STATEMENT_TO_RETURN_THE_TICKET_ID_OF_LAST_RESERVATION
             = "select max(ticket_id) from ticket";

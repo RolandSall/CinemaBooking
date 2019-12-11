@@ -40,12 +40,12 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId, int roomId) {
-        return bookingRepository.getSeatAllSeatsForMovieEvent(movieId, cinemaId, roomId);
+    public List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId, int movieEvent, int roomId) {
+        return bookingRepository.getSeatAllSeatsForMovieEvent(movieId, cinemaId,movieEvent ,roomId);
     }
 
     @Override
-    public String reserveSeatForUser(int movieId ,int cinemaId, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException {
+    public String reserveSeatForUser(int movieId ,int cinemaId, int movieEvent, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException {
         if (isUser(userId)) {
             int tickedIdGenerated = ticketService.createTicket(userId,ticketPrice);
             System.out.println(tickedIdGenerated);
