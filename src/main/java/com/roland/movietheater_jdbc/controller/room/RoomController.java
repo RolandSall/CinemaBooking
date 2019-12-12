@@ -72,16 +72,7 @@ public class RoomController {
         }
     }
 
-    @PutMapping("/admin/cinemas/{cinemaId}/rooms/{roomId}")
-    public ResponseEntity UpdateRoomInBranch(@PathVariable("cinemaId") int cinemaId, @PathVariable("roomId") int roomId, @RequestBody RoomApiRequestForAdmin request){
-        try {
-            Room room = roomService.updateRoomInBranch(cinemaId,roomId,getRoom(request, cinemaId));
-            RoomApiResponseForAdmin response = getRoomApiResponse(room);
-            return ResponseEntity.status(HttpStatus.OK).body(response);
-        } catch (FailedToUpdateRoomInCinemaBranchException e) {
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
+
 
     private Room getRoom(RoomApiRequestForAdmin request, int cinemaId) {
         return Room.builder()

@@ -1,6 +1,7 @@
 package com.roland.movietheater_jdbc.controller.seat;
 
 import com.roland.movietheater_jdbc.model.Seat;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToUpdateRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.SeatService.FailedToCreateSeatInCinemaBranchRoom;
 import com.roland.movietheater_jdbc.service.SeatService.FailedToDeleteSeatInCinemaBranchRoom;
 import com.roland.movietheater_jdbc.service.SeatService.FailedToFindSeatInCinemaBranchRoom;
@@ -66,7 +67,7 @@ public class SeatController {
         try {
             String seatIdDeleted = seatService.deleteAllSeatsInRoom(cinemaId, roomId);
             return ResponseEntity.status(HttpStatus.OK).body(seatIdDeleted);
-        } catch (FailedToDeleteSeatInCinemaBranchRoom e) {
+        } catch (FailedToDeleteSeatInCinemaBranchRoom | FailedToUpdateRoomInCinemaBranchException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
         }
     }
@@ -82,7 +83,7 @@ public class SeatController {
             List<Seat> seatList = seatService.createSeatsInRoom(cinemaId, roomId, roomCapacity);
             List<SeatApiResponseForAdmin> responseList = buildSeatListResponseForAdmin(seatList);
             return ResponseEntity.status(HttpStatus.OK).body(responseList);
-        } catch (FailedToCreateSeatInCinemaBranchRoom e) {
+        } catch (FailedToCreateSeatInCinemaBranchRoom | FailedToUpdateRoomInCinemaBranchException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
         }
 

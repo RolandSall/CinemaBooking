@@ -5,6 +5,7 @@ import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
 import com.roland.movietheater_jdbc.service.BookingService.BookingService;
 import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToReserveSeatInCinemaBranch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,13 +67,13 @@ public class BookingController {
 
         try {
             String seatReserved = bookingService.reserveSeatForUser(movieId, cinemaId, movieEvent, roomId, seatId, userId, ticketPrice);
-            System.out.println(seatReserved);
-        } catch (FailedToFindAccountException e) {
-            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body(seatReserved);
+        } catch (FailedToFindAccountException | FailedToReserveSeatInCinemaBranch e) {
+            return ResponseEntity.status(HttpStatus.OK).body(e.getLocalizedMessage());
         }
 
 
-        return null;
+
 
     }
 

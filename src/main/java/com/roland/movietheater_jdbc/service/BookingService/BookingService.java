@@ -7,6 +7,7 @@ import com.roland.movietheater_jdbc.model.Customer;
 import com.roland.movietheater_jdbc.repository.BookingRepository.BookingRepository;
 import com.roland.movietheater_jdbc.service.Customer.CustomerService;
 import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToReserveSeatInCinemaBranch;
 import com.roland.movietheater_jdbc.service.TicketService.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public String reserveSeatForUser(int movieId ,int cinemaId, int movieEvent, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException {
+    public String reserveSeatForUser(int movieId ,int cinemaId, int movieEvent, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch {
         if (isUser(userId)) {
             int tickedIdGenerated = ticketService.createTicket(userId,ticketPrice);
             System.out.println(tickedIdGenerated);
@@ -54,7 +55,7 @@ public class BookingService implements IBookingService {
         }
 
         else
-            return " User Not Found ! Please Register Before Booking ! ";
+            throw new FailedToFindAccountException("Not A User Please Log in Before Submitting");
 
     }
 

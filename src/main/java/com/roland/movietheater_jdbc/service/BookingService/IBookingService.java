@@ -4,6 +4,7 @@ import com.roland.movietheater_jdbc.model.CineMovieEvent;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
 import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
+import com.roland.movietheater_jdbc.service.SeatService.FailedToReserveSeatInCinemaBranch;
 
 import java.util.List;
 
@@ -16,5 +17,5 @@ public interface IBookingService {
 
     List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId,int movieEvent, int roomId);
 
-    String reserveSeatForUser(int movieId , int cinemaId, int movieEvent, int roomId, int seatId, int userId, double ticketPrice) throws FailedToFindAccountException;
+    String reserveSeatForUser(int movieId , int cinemaId, int movieEvent, int roomId, int seatId, int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch;
 }

@@ -1,10 +1,13 @@
 package com.roland.movietheater_jdbc.service.SeatService;
 
+import com.roland.movietheater_jdbc.model.Room;
 import com.roland.movietheater_jdbc.model.Seat;
 import com.roland.movietheater_jdbc.repository.SeatRepository.ISeatRepositoryDAO;
 import com.roland.movietheater_jdbc.repository.SeatRepository.SeatRepositoryDAO;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToFindRoomInCinemaBranchException;
+import com.roland.movietheater_jdbc.service.RoomService.FailedToUpdateRoomInCinemaBranchException;
 import com.roland.movietheater_jdbc.service.RoomService.IRoomService;
+import com.roland.movietheater_jdbc.service.RoomService.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +17,13 @@ import java.util.List;
 @Service
 public class SeatService implements  ISeatService {
 
-    SeatRepositoryDAO seatRepositoryDAO;
+ private    SeatRepositoryDAO seatRepositoryDAO;
+ private    RoomService roomService;
 
     @Autowired
-    public SeatService(SeatRepositoryDAO seatRepositoryDAO) {
+    public SeatService(SeatRepositoryDAO seatRepositoryDAO, RoomService roomService) {
         this.seatRepositoryDAO = seatRepositoryDAO;
+        this.roomService =roomService;
     }
 
     @Override
@@ -39,15 +44,24 @@ public class SeatService implements  ISeatService {
 
 
     @Override
-    public List<Seat> createSeatsInRoom(int cinemaId, int roomId, int roomCapacity) throws FailedToCreateSeatInCinemaBranchRoom {
-        return  createSeatsInRoomLoop(cinemaId,roomId,roomCapacity);
+    public List<Seat> createSeatsInRoom(int cinemaId, int roomId, int roomCapacity) throws FailedToCreateSeatInCinemaBranchRoom, FailedToUpdateRoomInCinemaBranchException {
+
+        List<Seat> seatList = createSeatsInRoomLoop(cinemaId,roomId,roomCapacity);
+        Room room = new Room();
+        room.setRoomStatus(false);
+        roomService.updateRoomInBranch(cinemaId,roomId,room);
+        return seatList;
 
     }
 
 
     @Override
-    public String deleteAllSeatsInRoom(int cinemaId, int roomId) throws FailedToDeleteSeatInCinemaBranchRoom {
-        return seatRepositoryDAO.deleteAllSeatsInRoom(cinemaId,roomId);
+    public String deleteAllSeatsInRoom(int cinemaId, int roomId) throws FailedToDeleteSeatInCinemaBranchRoom, FailedToUpdateRoomInCinemaBranchException {
+        String deletedSeats = seatRepositoryDAO.deleteAllSeatsInRoom(cinemaId,roomId);
+        Room room = new Room();
+        room.setRoomStatus(true);
+        roomService.updateRoomInBranch(cinemaId,roomId,room);
+        return deletedSeats;
     }
 
 
