@@ -50,7 +50,7 @@ public class BookingService implements IBookingService {
         if (isUser(userId)) {
             int tickedIdGenerated = ticketService.createTicket(userId,ticketPrice);
             System.out.println(tickedIdGenerated);
-            return bookingRepository.reserveSeatForUser(cinemaId, roomId, seatId,tickedIdGenerated , userId);
+            return bookingRepository.reserveSeatForUser(cinemaId, roomId, seatId, userId ,tickedIdGenerated );
 
         }
 
