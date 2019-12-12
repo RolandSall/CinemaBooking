@@ -29,7 +29,7 @@ public class BookingRepository implements IBookingRepository {
             " From(select C.cinema_id, ME.movie_eventId, S .* from movie_event ME, room R, cinemabranch C, seat S" +
             " where ME.room_id=R.room_id  And C.cinema_id=R.cinema_branch " +
             " And S.roomId_seat=R.room_id" +
-            " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id";
+            " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id order by seat_id asc";
 
 
     @Autowired

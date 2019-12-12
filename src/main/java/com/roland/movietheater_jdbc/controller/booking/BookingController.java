@@ -94,6 +94,7 @@ public class BookingController {
                 .roomIdOfSeat(cineMovieEventRoomSeat.getRoomIdOfSeat())
                 .seatId(cineMovieEventRoomSeat.getSeatId())
                 .bookingId(cineMovieEventRoomSeat.getBookingId())
+                .ticketId(cineMovieEventRoomSeat.getTicketId())
                 .seatRow(cineMovieEventRoomSeat.getSeatRow())
                 .seatColumn(cineMovieEventRoomSeat.getSeatColumn())
                 .seatStatus(cineMovieEventRoomSeat.isSeatStatus())

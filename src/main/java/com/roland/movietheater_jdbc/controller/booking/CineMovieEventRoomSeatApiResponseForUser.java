@@ -13,6 +13,7 @@ import java.util.Date;
 public class CineMovieEventRoomSeatApiResponseForUser {
 
     private int cinemaId;
+    private int ticketId;
     private int movieEventId;
     private int seatId;
     private int roomIdOfSeat;

@@ -14,6 +14,7 @@ public class CineMovieEventRoomSeat {
 
     private int cinemaId;
     private int movieEventId;
+    private int ticketId;
     private int seatId;
     private int roomIdOfSeat;
     private int seatRow;
