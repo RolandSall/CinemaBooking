@@ -16,5 +16,6 @@ public class MovieEventApiRequestForAdmin {
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss")
     private Date movieEndTime;
+    private double ticketPrice;
 
 }

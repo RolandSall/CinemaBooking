@@ -3,7 +3,9 @@ package com.roland.movietheater_jdbc.repository.BookingRepository;
 import com.roland.movietheater_jdbc.model.CineMovieEvent;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
+import com.roland.movietheater_jdbc.service.BookingService.FailedToReserveSeat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +28,7 @@ public class BookingRepository implements IBookingRepository {
 
     private static final String SQL_STATEMENT_TO_FIND_All_SEATS_RESERVED_AND_NOT_RESERVED_IN_A_MOVIE_EVENT =
             " select Y.*, booking.booking_id  , booking.ticket_id , booking.seat_status , booking.booking_date" +
-            " From(select C.cinema_id, ME.movie_eventId, S .* from movie_event ME, room R, cinemabranch C, seat S" +
+            " From(select C.cinema_id, ME.movie_eventId,ME.ticket_price, S .* from movie_event ME, room R, cinemabranch C, seat S" +
             " where ME.room_id=R.room_id  And C.cinema_id=R.cinema_branch " +
             " And S.roomId_seat=R.room_id" +
             " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id order by seat_id asc";
@@ -52,9 +54,13 @@ public class BookingRepository implements IBookingRepository {
     }
 
     @Override
-    public String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID, int ticketId) {
-        jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT, ticketId, seatId, 1);
-        return "Reserved!";
+    public String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID, int ticketId) throws FailedToReserveSeat {
+        try {
+            jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT, ticketId, seatId, 1);
+            return "Reserved!";
+        } catch (DataAccessException e) {
+            throw new FailedToReserveSeat("Could Not Reserve This Seat ! Try Again");
+        }
     }
 
 

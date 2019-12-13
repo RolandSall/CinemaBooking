@@ -22,6 +22,7 @@ public class CineMovieEventRoomSeatApiResponseForUser {
     private int bookingId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bookingDate;
+    private double ticketPrice;
     private boolean seatStatus;
 
 

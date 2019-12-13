@@ -18,6 +18,7 @@ public class MovieEventMapper implements RowMapper<MovieEvent> {
         movieEvent.setMovieEventId(resultSet.getInt("movie_eventId"));
         movieEvent.setMovieStartTime(resultSet.getTimestamp("movie_start_time"));
         movieEvent.setMovieEndTime(resultSet.getTimestamp("movie_end_time"));
+        movieEvent.setTicketPrice(resultSet.getDouble("ticket_price"));
 
 
         return movieEvent;

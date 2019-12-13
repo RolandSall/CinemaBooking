@@ -20,6 +20,7 @@ public class CineMovieEventRoomSeat {
     private int seatRow;
     private int seatColumn;
     private int bookingId;
+    private double ticketPrice;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date bookingDate;
     private boolean seatStatus;

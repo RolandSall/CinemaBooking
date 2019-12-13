@@ -21,4 +21,5 @@ public class CineRoomMovieEventApiResponseForAdmin {
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date movieEndTime;
+    private double ticketPrice;
 }

@@ -24,6 +24,7 @@ public class CineMovieEventRoomSeatMapper implements RowMapper<CineMovieEventRoo
         cineMovieEventRoomSeat.setTicketId(resultSet.getInt("ticket_id"));
         cineMovieEventRoomSeat.setSeatStatus(resultSet.getBoolean("seat_status"));
         cineMovieEventRoomSeat.setBookingDate(resultSet.getTimestamp("booking_date"));
+        cineMovieEventRoomSeat.setTicketPrice(resultSet.getDouble("ticket_price"));
         return cineMovieEventRoomSeat;
     }
 }

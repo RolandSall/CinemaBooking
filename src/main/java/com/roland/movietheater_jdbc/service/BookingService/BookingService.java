@@ -46,7 +46,7 @@ public class BookingService implements IBookingService {
     }
 
     @Override
-    public String reserveSeatForUser(int movieId ,int cinemaId, int movieEvent, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch {
+    public String reserveSeatForUser(int movieId ,int cinemaId, int movieEvent, int roomId, int seatId,int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch, FailedToReserveSeat {
         if (isUser(userId)) {
             int tickedIdGenerated = ticketService.createTicket(userId,ticketPrice);
             System.out.println(tickedIdGenerated);

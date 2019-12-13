@@ -20,6 +20,7 @@ public class CineRoomMovieEventMapper implements RowMapper<CineRoomMovieEvent> {
         cineRoomMovieEvent.setRoomId(resultSet.getInt("room_id"));
         cineRoomMovieEvent.setMovieStartTime(resultSet.getTimestamp("movie_start_time"));
         cineRoomMovieEvent.setMovieEndTime(resultSet.getTimestamp("movie_end_time"));
+        cineRoomMovieEvent.setTicketPrice(resultSet.getDouble("ticket_price"));
 
         return cineRoomMovieEvent;
     }

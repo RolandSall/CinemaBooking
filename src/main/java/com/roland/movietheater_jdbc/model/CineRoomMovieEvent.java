@@ -16,6 +16,7 @@ public class CineRoomMovieEvent {
     int movieEventId;
     int movieId;
     int roomId;
+    private double ticketPrice;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date movieStartTime;
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")

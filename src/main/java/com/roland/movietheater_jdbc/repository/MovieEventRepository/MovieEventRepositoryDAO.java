@@ -23,7 +23,7 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
             "AND room.cinema_branch = cinemabranch.cinema_id";
 
     private static final String SQL_STATEMENT_TO_CREATE_MOVIE_EVENT =
-            "Insert into movie_event (movie_id,room_id, movie_start_time, movie_end_time) values (?,?,?,?)";
+            "Insert into movie_event (movie_id,room_id, movie_start_time, movie_end_time,ticket_price) values (?,?,?,?,?)";
 
     private static final String SQL_STATEMENT_TO_DELETE_A_MOVIE_EVENT_IN_A_CINEMABRANCH
             ="DELETE FROM movie_event WHERE movie_eventId = ?  and movie_id = ? and  room_id = ? ";
@@ -52,7 +52,8 @@ public class MovieEventRepositoryDAO implements IMovieEventRepositoryDAO {
                     movieEvent.getMovieId(),
                     movieEvent.getRoomId(),
                     movieEvent.getMovieStartTime(),
-                    movieEvent.getMovieEndTime());
+                    movieEvent.getMovieEndTime(),
+                    movieEvent.getTicketPrice());
 
             return movieEvent;
 

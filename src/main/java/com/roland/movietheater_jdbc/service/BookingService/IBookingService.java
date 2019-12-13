@@ -17,5 +17,5 @@ public interface IBookingService {
 
     List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId,int movieEvent, int roomId);
 
-    String reserveSeatForUser(int movieId , int cinemaId, int movieEvent, int roomId, int seatId, int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch;
+    String reserveSeatForUser(int movieId , int cinemaId, int movieEvent, int roomId, int seatId, int userId, double ticketPrice) throws FailedToFindAccountException, FailedToReserveSeatInCinemaBranch, FailedToReserveSeat;
 }

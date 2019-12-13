@@ -101,6 +101,7 @@ public class MovieEventController {
                 .movieEventId(movieEvent.getMovieEventId())
                 .movieStartTime(movieEvent.getMovieStartTime())
                 .movieEndTime(movieEvent.getMovieEndTime())
+                .ticketPrice(movieEvent.getTicketPrice())
                 .build();
     }
 
@@ -110,6 +111,7 @@ public class MovieEventController {
                 .roomId(roomId)
                 .movieStartTime(request.getMovieStartTime())
                 .movieEndTime(request.getMovieEndTime())
+                .ticketPrice(request.getTicketPrice())
                 .build();
     }
 
@@ -156,6 +158,7 @@ public class MovieEventController {
                 .movieEventId(cineRoomMovieEvent.getMovieEventId())
                 .movieStartTime(cineRoomMovieEvent.getMovieStartTime())
                 .movieEndTime(cineRoomMovieEvent.getMovieEndTime())
+                .ticketPrice(cineRoomMovieEvent.getTicketPrice())
                 .build();
     }
 }
