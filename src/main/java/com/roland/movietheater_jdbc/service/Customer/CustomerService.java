@@ -38,4 +38,9 @@ public class CustomerService implements ICustomerService {
     public Customer getCustomerById(int customerId) throws FailedToFindAccountException {
         return customerRepository.getCustomerById(customerId);
     }
+
+    @Override
+    public Customer userSignIn(String username, String password) throws FailedToFindAccountException {
+        return customerRepository.userSignIn(username,password);
+    }
 }

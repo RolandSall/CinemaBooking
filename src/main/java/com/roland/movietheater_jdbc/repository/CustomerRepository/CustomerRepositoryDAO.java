@@ -24,6 +24,10 @@ public class CustomerRepositoryDAO implements ICustomerRepositoryDAO {
 
     private static final String SQL_STATEMENT_TO_FIND_CUSTOMER_BY_ID = "SELECT * FROM customer where customer_id = ?";
 
+    private static final String SQL_STATEMENT_TO_FIND_CUSTOMER_SIGNING_IN_BY_USERNAME_AND_PASSWORD=
+            "select * from customer where customer_username = ? AND customer_password = ?";
+
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -40,6 +44,18 @@ public class CustomerRepositoryDAO implements ICustomerRepositoryDAO {
             return customer;
         } catch (Exception e) {
             throw new FailedToFindAccountException("User Not Found");
+        }
+    }
+
+    @Override
+    public Customer userSignIn(String username, String password) throws FailedToFindAccountException {
+        try {
+            return jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_CUSTOMER_SIGNING_IN_BY_USERNAME_AND_PASSWORD
+                    ,new CustomerMapper()
+                    ,username
+                    ,password);
+        } catch (DataAccessException e) {
+            throw new FailedToFindAccountException("User Not Found ! Wrong Username Or Password  ");
         }
     }
 

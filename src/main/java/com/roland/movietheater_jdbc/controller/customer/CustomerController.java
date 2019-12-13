@@ -43,6 +43,18 @@ public class CustomerController {
 
     }
 
+    @GetMapping("/signIn/usernames/{username}/passwords/{password}")
+    public ResponseEntity userSignIn(@PathVariable("username") String username, @PathVariable("password") String password) {
+        try {
+            Customer admin = customerService.userSignIn(username, password);
+            CustomerApiResponseForUser response = getCustomerApiResponseForUser(admin);
+            return   ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToFindAccountException e) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
+        }
+
+    }
+
     @PostMapping("/createAccount")
     public ResponseEntity createAccount(@RequestBody CustomerApiRequestForUser request){
         try {
@@ -53,19 +65,6 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
-
-    @GetMapping("/signIn/{username}/{password}")
-    public ResponseEntity userSignIn(@PathVariable("username") String username, @PathVariable("password") String password) {
-        return null;
-    }
-
-
-    @GetMapping("/sign/{adminUsername}/{adminPassword}")
-    public ResponseEntity adminSignIn(@PathVariable("adminUsername") String adminUsername, @PathVariable("adminPassword") String adminPassword){
-        return null;
-    }
-
-
 
 
     @PutMapping("/customer/{customerId}")

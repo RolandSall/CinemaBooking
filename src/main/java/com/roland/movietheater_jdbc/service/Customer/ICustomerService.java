@@ -12,4 +12,6 @@ public interface ICustomerService {
     Customer upadteAccount(int customerId, Customer customer) throws FailedToUpdateAccountException, FailedToCreateAccountException;
 
     Customer getCustomerById(int customerId) throws FailedToFindAccountException;
+
+    Customer userSignIn(String username, String password) throws FailedToFindAccountException;
 }

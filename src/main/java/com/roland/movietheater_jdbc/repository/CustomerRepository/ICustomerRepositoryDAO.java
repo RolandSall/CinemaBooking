@@ -16,4 +16,6 @@ public interface ICustomerRepositoryDAO {
     Customer updateAccount(int customerId, Customer customer) throws FailedToUpdateAccountException;
 
     Customer getCustomerById(int customerId) throws FailedToFindAccountException;
+
+    Customer userSignIn(String username, String password) throws FailedToFindAccountException;
 }
