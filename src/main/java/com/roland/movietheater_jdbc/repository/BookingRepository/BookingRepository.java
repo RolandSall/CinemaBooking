@@ -3,6 +3,7 @@ package com.roland.movietheater_jdbc.repository.BookingRepository;
 import com.roland.movietheater_jdbc.model.CineMovieEvent;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
+import com.roland.movietheater_jdbc.model.Reservation;
 import com.roland.movietheater_jdbc.service.BookingService.FailedToReserveSeat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -34,6 +35,8 @@ public class BookingRepository implements IBookingRepository {
             " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id order by seat_id asc";
 
 
+    private static final String SQL_STATEMENT_TO_FIND_BOOKING_FOR_CUSTOMERS_BY_ID = "SELECT * FROM reservation where customer_id = ?";
+
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -61,6 +64,11 @@ public class BookingRepository implements IBookingRepository {
         } catch (DataAccessException e) {
             throw new FailedToReserveSeat("Could Not Reserve This Seat ! Try Again");
         }
+    }
+
+    @Override
+    public List<Reservation> findReservationForCustomerById(int userId) {
+        return jdbcTemplate.query(SQL_STATEMENT_TO_FIND_BOOKING_FOR_CUSTOMERS_BY_ID,new ReservationMapper(), userId);
     }
 
 

@@ -3,6 +3,7 @@ package com.roland.movietheater_jdbc.controller.booking;
 import com.roland.movietheater_jdbc.model.CineMovieEvent;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
 import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
+import com.roland.movietheater_jdbc.model.Reservation;
 import com.roland.movietheater_jdbc.service.BookingService.BookingService;
 import com.roland.movietheater_jdbc.service.BookingService.FailedToReserveSeat;
 import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
@@ -56,6 +57,15 @@ public class BookingController {
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
+    @GetMapping("/bookings/{userId}")
+    public ResponseEntity getAllBookingsForCustomerById(@PathVariable("userId") int userId) {
+        System.out.println(userId);
+        List<Reservation> reservationList = bookingService.findReservationForCustomerById(userId);
+        List<ReservationApiResponseForUser> responseList = buildApiResponseForReservation(reservationList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseList);
+    }
+
+
     @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}//movieEvents/{movieEvent}/rooms/{roomId}/seat/{seatId}/user/{userId}/{ticketPrice}")
     public ResponseEntity reserveSeatForUser(@PathVariable("movieId") int movieId
             , @PathVariable("cinemaId") int cinemaId
@@ -75,8 +85,6 @@ public class BookingController {
 
 
     }
-
-
 
 
     private List<CineMovieEventRoomSeatApiResponseForUser> getSeatsAvailableForMovieEventApiResponse(List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList) {
@@ -144,6 +152,28 @@ public class BookingController {
                 .cinemaName(cineMovieEvent.getCinemaName())
                 .cinemaAddress(cineMovieEvent.getCinemaAddress())
                 .cinemaPhone(cineMovieEvent.getCinemaPhone())
+                .build();
+    }
+
+    private List<ReservationApiResponseForUser> buildApiResponseForReservation(List<Reservation> reservationList) {
+        List<ReservationApiResponseForUser> responseList = new ArrayList<>();
+        for (Reservation responseForUser : reservationList) {
+            responseList.add(getReservationForUser(responseForUser));
+        }
+
+        return responseList;
+    }
+
+    private ReservationApiResponseForUser getReservationForUser(Reservation responseForUser) {
+        return new ReservationApiResponseForUser().builder()
+                .customerId(responseForUser.getCustomerId())
+                .customerUsername(responseForUser.getCustomerUsername())
+                .movieName(responseForUser.getMovieName())
+                .cinemaAddress(responseForUser.getCinemaAddress())
+                .roomName(responseForUser.getRoomName())
+                .seatRow(responseForUser.getSeatRow())
+                .seatColumn(responseForUser.getSeatColumn())
+                .ticketPrice(responseForUser.getTicketPrice())
                 .build();
     }
 

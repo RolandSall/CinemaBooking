@@ -1,9 +1,6 @@
 package com.roland.movietheater_jdbc.service.BookingService;
 
-import com.roland.movietheater_jdbc.model.CineMovieEvent;
-import com.roland.movietheater_jdbc.model.CineMovieEventRoomSeat;
-import com.roland.movietheater_jdbc.model.CineMovieEventRoomTiming;
-import com.roland.movietheater_jdbc.model.Customer;
+import com.roland.movietheater_jdbc.model.*;
 import com.roland.movietheater_jdbc.repository.BookingRepository.BookingRepository;
 import com.roland.movietheater_jdbc.service.Customer.CustomerService;
 import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
@@ -57,6 +54,11 @@ public class BookingService implements IBookingService {
         else
             throw new FailedToFindAccountException("Not A User Please Log in Before Submitting");
 
+    }
+
+    @Override
+    public List<Reservation> findReservationForCustomerById(int userId) {
+        return bookingRepository.findReservationForCustomerById(userId);
     }
 
 
