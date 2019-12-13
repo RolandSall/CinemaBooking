@@ -35,4 +35,9 @@ public class MovieService implements IMovieService {
     public Movie updateMovieInBranch(int movieId, Movie movie) throws FailedToUpdateMovieException {
         return movieRepository.updateMovieInBranch(movieId, movie);
     }
+
+    @Override
+    public List<Movie> SearchForMovie(String search) {
+        return movieRepository.SearchForMovie(search);
+    }
 }

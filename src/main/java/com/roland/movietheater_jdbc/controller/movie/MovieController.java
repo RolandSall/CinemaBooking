@@ -44,12 +44,10 @@ public class MovieController {
 
     @GetMapping("/movies/{search}")
     public ResponseEntity searchForMovie(@PathVariable("search") String search){
-        List<Movie> movieList = movieService.findAllMovies();
+        List<Movie> movieList = movieService.SearchForMovie(search);
         List<MovieApiResponseForAdmin> responseList = buildResponse(movieList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
-
-
 
     @DeleteMapping("/admin/movies/{movieId}")
     public ResponseEntity DeleteMovieInCinemaBranch(@PathVariable("movieId") int movieId) {
@@ -73,8 +71,6 @@ public class MovieController {
 
 
     }
-
-
 
 
     @PostMapping("/admin/movies")

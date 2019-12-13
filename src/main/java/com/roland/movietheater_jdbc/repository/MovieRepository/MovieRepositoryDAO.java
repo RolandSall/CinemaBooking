@@ -34,6 +34,8 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
 
     private static final String  SQL_STATEMENT_FIND_MOVIE_BY_ID = "select * from movie where movie_id = ? ";
 
+    private static final String SQL_STATEMENT_TO_MOVIE_BY_SEARCHING = "select * from movie where movie_name Like '";
+
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -59,6 +61,15 @@ public class MovieRepositoryDAO implements IMovieRepositoryDAO {
             System.out.println(e.toString());
             throw new FailedToFindMovieExcpetion(e, movieId);
         }
+
+    }
+
+
+    @Override
+    public List<Movie> SearchForMovie(String search) {
+        List<Movie> movieAtCurrentCinemaList = jdbcTemplate.query(SQL_STATEMENT_TO_MOVIE_BY_SEARCHING + search + "%'", new MovieMapper());
+
+        return movieAtCurrentCinemaList;
 
     }
 

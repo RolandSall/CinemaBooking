@@ -20,4 +20,6 @@ public interface IMovieRepositoryDAO {
     Movie updateMovieInBranch(int movieId, Movie movie1) throws FailedToUpdateMovieException;
 
     Movie findMovieById(int movieId) throws FailedToFindMovieExcpetion;
+
+    List<Movie> SearchForMovie(String search);
 }

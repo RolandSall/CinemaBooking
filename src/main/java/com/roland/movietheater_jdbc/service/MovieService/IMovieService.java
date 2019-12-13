@@ -15,4 +15,6 @@ public interface IMovieService {
      Movie findMovieById(int movieId) throws FailedToFindMovieExcpetion;
 
      Movie updateMovieInBranch( int  movieId, Movie movie) throws FailedToUpdateMovieException;
+
+     List<Movie> SearchForMovie(String search);
 }
