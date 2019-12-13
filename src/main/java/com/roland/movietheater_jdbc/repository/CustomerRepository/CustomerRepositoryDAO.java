@@ -34,6 +34,16 @@ public class CustomerRepositoryDAO implements ICustomerRepositoryDAO {
     }
 
     @Override
+    public Customer getCustomerById(int customerId) throws FailedToFindAccountException {
+        try {
+            Customer customer = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_CUSTOMER_BY_ID, new CustomerMapper(), customerId);
+            return customer;
+        } catch (Exception e) {
+            throw new FailedToFindAccountException("User Not Found");
+        }
+    }
+
+    @Override
     public Customer createAccount(Customer customer) throws FailedToCreateAccountException {
 
         if (IsUserNameTaken(customer.getCustomerUsername()))
@@ -80,15 +90,7 @@ public class CustomerRepositoryDAO implements ICustomerRepositoryDAO {
         }
     }
 
-    @Override
-    public Customer getCustomerById(int customerId) throws FailedToFindAccountException {
-        try {
-            Customer customer = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_CUSTOMER_BY_ID, new CustomerMapper(), customerId);
-            return customer;
-        } catch (Exception e) {
-            throw new FailedToFindAccountException("User Not Found");
-        }
-    }
+
 
     private boolean IsUserNameTaken(String customerUsername) {
         List<Customer> customerList = jdbcTemplate.query(SQL_STATEMENT_TO_FIND_ALL_CUSTOMERS, new CustomerMapper());

@@ -73,9 +73,9 @@ public class BookingController {
         }
 
 
-
-
     }
+
+
 
 
     private List<CineMovieEventRoomSeatApiResponseForUser> getSeatsAvailableForMovieEventApiResponse(List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList) {

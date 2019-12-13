@@ -43,7 +43,7 @@ public class CustomerController {
 
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/createAccount")
     public ResponseEntity createAccount(@RequestBody CustomerApiRequestForUser request){
         try {
             Customer customer = customerService.createAccount(getCustomer(request));
@@ -53,6 +53,20 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
+
+    @GetMapping("/signIn/{username}/{password}")
+    public ResponseEntity userSignIn(@PathVariable("username") String username, @PathVariable("password") String password) {
+        return null;
+    }
+
+
+    @GetMapping("/sign/{adminUsername}/{adminPassword}")
+    public ResponseEntity adminSignIn(@PathVariable("adminUsername") String adminUsername, @PathVariable("adminPassword") String adminPassword){
+        return null;
+    }
+
+
+
 
     @PutMapping("/customer/{customerId}")
     public ResponseEntity updateAccount(@PathVariable("customerId") int customerId ,@RequestBody CustomerApiRequestForUser request){
