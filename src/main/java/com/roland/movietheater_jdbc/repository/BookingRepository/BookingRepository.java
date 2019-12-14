@@ -24,7 +24,7 @@ public class BookingRepository implements IBookingRepository {
             "select C.cinema_id, ME.* from movie_event ME, room R, cinemabranch C  where ME.room_id = R.room_id And C.cinema_id = R.cinema_branch And movie_id = ? And cinema_id = ? ";
 
 
-    private static final String SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT = "insert into booking (ticket_id , seat_id , seat_status) values (?,?,?)";
+    private static final String SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT = "insert into booking (ticket_id , seat_id ,movie_eventId ,seat_status) values (?,?,?,?)";
 
 
     private static final String SQL_STATEMENT_TO_FIND_All_SEATS_RESERVED_AND_NOT_RESERVED_IN_A_MOVIE_EVENT =
@@ -32,7 +32,7 @@ public class BookingRepository implements IBookingRepository {
             " From(select C.cinema_id, ME.movie_eventId,ME.ticket_price, S .* from movie_event ME, room R, cinemabranch C, seat S" +
             " where ME.room_id=R.room_id  And C.cinema_id=R.cinema_branch " +
             " And S.roomId_seat=R.room_id" +
-            " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id order by seat_id asc";
+            " And movie_id=? And cinema_id= ? And ME.movie_eventId = ? And R.room_id= ? ) as Y left join booking on Y.seat_id =booking.seat_id and booking.movie_eventId = ? order by seat_id asc";
 
 
     private static final String SQL_STATEMENT_TO_FIND_BOOKING_FOR_CUSTOMERS_BY_ID = "SELECT * FROM reservation where customer_id = ?";
@@ -53,13 +53,13 @@ public class BookingRepository implements IBookingRepository {
 
     @Override
     public List<CineMovieEventRoomSeat> getSeatAllSeatsForMovieEvent(int movieId, int cinemaId,int movieEvent, int roomId) {
-        return jdbcTemplate.query(SQL_STATEMENT_TO_FIND_All_SEATS_RESERVED_AND_NOT_RESERVED_IN_A_MOVIE_EVENT, new CineMovieEventRoomSeatMapper(), movieId, cinemaId,movieEvent, roomId);
+        return jdbcTemplate.query(SQL_STATEMENT_TO_FIND_All_SEATS_RESERVED_AND_NOT_RESERVED_IN_A_MOVIE_EVENT, new CineMovieEventRoomSeatMapper(), movieId, cinemaId,movieEvent, roomId, movieEvent);
     }
 
     @Override
-    public String reserveSeatForUser(int cinemaId, int roomId, int seatId, int userID, int ticketId) throws FailedToReserveSeat {
+    public String reserveSeatForUser(int cinemaId,int movieEventId, int roomId, int seatId, int userID, int ticketId) throws FailedToReserveSeat {
         try {
-            jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT, ticketId, seatId, 1);
+            jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT, ticketId, seatId,movieEventId, 1);
             return "Reserved!";
         } catch (DataAccessException e) {
             throw new FailedToReserveSeat("Could Not Reserve This Seat ! Try Again");
