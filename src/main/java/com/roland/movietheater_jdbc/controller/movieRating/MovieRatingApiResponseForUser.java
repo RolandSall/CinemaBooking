@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class MovieRatingApiResponseForUser {
-
+    private  int customerId;
     private  int movieId;
     private String customerUserName;
     private double movieReviewRating;

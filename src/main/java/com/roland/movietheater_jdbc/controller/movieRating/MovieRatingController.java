@@ -1,6 +1,8 @@
 package com.roland.movietheater_jdbc.controller.movieRating;
 
 import com.roland.movietheater_jdbc.model.MovieRatingForm;
+import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
+import com.roland.movietheater_jdbc.service.RatingMovieService.FailedToRateMovie;
 import com.roland.movietheater_jdbc.service.RatingMovieService.RatingMovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,26 +24,51 @@ public class MovieRatingController {
     }
 
 
-    @GetMapping("admin/movies/{movieId}/ratings")
+    @GetMapping("/admin/movies/{movieId}/ratings")
     public ResponseEntity getAllRatingForMovieForAdmin(@PathVariable("movieId") int movieId){
         List<MovieRatingForm> movieRatingFormList = ratingMovieService.findAllRatingForMovie(movieId);
         List<MovieRatingApiResponseForAdmin> responseList = buildResponseForAdmin(movieRatingFormList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
-    @GetMapping("movies/{movieId}/ratings")
+    @GetMapping("/movies/{movieId}/ratings")
     public ResponseEntity getAllRatingForMovieForUser(@PathVariable("movieId") int movieId){
         List<MovieRatingForm> movieRatingFormList = ratingMovieService.findAllRatingForMovie(movieId);
         List<MovieRatingApiResponseForUser> responseList = buildResponseForUser(movieRatingFormList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
-    @DeleteMapping("movies/{movieId}/ratings/{customerId}")
+    @DeleteMapping("/movies/{movieId}/ratings/customers/{customerId}")
     public ResponseEntity deleteRatingForMovie(@PathVariable("movieId") int movieId, @PathVariable("customerId") int customerId){
         String ratingDeleted = ratingMovieService.deleteMovieRatingForMovie(movieId,customerId);
         return ResponseEntity.status(HttpStatus.OK).body(ratingDeleted);
     }
 
+
+    @PostMapping("/movies/{movieId}/ratings/{customerId}")
+    public ResponseEntity createRatingForMovie(@PathVariable("movieId") int movieId
+                                             , @PathVariable("customerId") int customerId
+                                             , @RequestBody MovieRatingApiRequestForAdminAndUser request){
+
+        try {
+            MovieRatingForm movieRatingForm = ratingMovieService.createRatingForMovie(getMovieRatingForm(request, movieId,customerId));
+            MovieRatingApiResponseForUser movieRatingApiResponseForUser = getMovieRatingForUser(movieRatingForm);
+            return ResponseEntity.status(HttpStatus.OK).body(movieRatingApiResponseForUser);
+        } catch (FailedToRateMovie | FailedToFindAccountException e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
+        }
+
+
+    }
+
+    private MovieRatingForm getMovieRatingForm(MovieRatingApiRequestForAdminAndUser request, int movieId, int customerId) {
+        return  new MovieRatingForm().builder()
+                .customerId(customerId)
+                .movieId(movieId)
+                .movieReviewRating(request.getMovieReviewRating())
+                .movieReviewComment(request.getMovieReviewComment())
+                .build();
+    }
 
 
     private List<MovieRatingApiResponseForUser> buildResponseForUser(List<MovieRatingForm> movieRatingFormList) {

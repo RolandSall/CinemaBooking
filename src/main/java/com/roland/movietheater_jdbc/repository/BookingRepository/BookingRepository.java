@@ -60,7 +60,7 @@ public class BookingRepository implements IBookingRepository {
     public String reserveSeatForUser(int cinemaId,int movieEventId, int roomId, int seatId, int userID, int ticketId) throws FailedToReserveSeat {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_RESERVE_A_SEAT_FOR_A_MOVIE_EVENT, ticketId, seatId,movieEventId, 1);
-            return "Reserved!";
+            return "Your Seat Have Been Reserved!";
         } catch (DataAccessException e) {
             throw new FailedToReserveSeat("Could Not Reserve This Seat ! Try Again");
         }
