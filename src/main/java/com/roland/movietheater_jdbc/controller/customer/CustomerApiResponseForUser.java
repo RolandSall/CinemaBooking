@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class CustomerApiResponseForUser {
 
+    private  int customerId;
     private String customerFirstName;
     private String customerLastName;
     private String customerPhone;

@@ -131,6 +131,7 @@ public class CustomerController {
                 .customerAddress(customer.getCustomerAddress())
                 .customerUsername(customer.getCustomerUsername())
                 .customerPassword(customer.getCustomerPassword())
+                .customerId(customer.getCustomerId())
                 .build();
 
         // We will will be passing The password to the user
