@@ -66,7 +66,7 @@ public class BookingController {
     }
 
 
-    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}//movieEvents/{movieEvent}/rooms/{roomId}/seat/{seatId}/user/{userId}/{ticketPrice}")
+    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}//movieEvents/{movieEvent}/rooms/{roomId}/seats/{seatId}/user/{userId}/tickets/{ticketPrice}")
     public ResponseEntity reserveSeatForUser(@PathVariable("movieId") int movieId
             , @PathVariable("cinemaId") int cinemaId
             , @PathVariable("movieEvent") int movieEvent
