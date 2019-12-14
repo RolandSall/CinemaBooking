@@ -1,7 +1,10 @@
 package com.roland.movietheater_jdbc.repository.CinemaRatingRepository;
 
 import com.roland.movietheater_jdbc.model.CinemaRatingForm;
+import com.roland.movietheater_jdbc.service.CinemaRatingService.FailedToRateCinemaBranch;
+import com.roland.movietheater_jdbc.service.RatingMovieService.FailedToRateMovie;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +23,7 @@ public class CinemaRatingRepositoryDAO implements ICinemaRatingRepositoryDAO {
     private static final String SQL_STATEMENT_TO_DELETE_RATING_FOR_CINEMABRANCH =
             "DELETE FROM cinema_rating where cinemaRating_id = ? AND cinemaRated_id = ? AND customerRater_id = ? ";
 
-    private static final String SQL_STATEMENT_TO_FIND_AVG_RATING_FOR_CINEMA = "";
+    private static final String SQL_STATEMENT_TO_FIND_AVG_RATING_FOR_CINEMA = "SELECT AVG(cinema_review_Rating) FROM cinema_rating where cinemaRated_id =?";
 
 
     @Autowired
@@ -33,14 +36,18 @@ public class CinemaRatingRepositoryDAO implements ICinemaRatingRepositoryDAO {
     }
 
     @Override
-    public CinemaRatingForm createRatingFormForCinemaBranch(CinemaRatingForm cinemaFormRating) {
-         jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_RATING_FOR_CINEMA_BRANCH
-                , cinemaFormRating.getCinemaId()
-                , cinemaFormRating.getCustomerId()
-                , cinemaFormRating.getCinemaReviewRating()
-                , cinemaFormRating.getCinemaRatingComment());
+    public CinemaRatingForm createRatingFormForCinemaBranch(CinemaRatingForm cinemaFormRating) throws FailedToRateCinemaBranch {
+        try {
+            jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_RATING_FOR_CINEMA_BRANCH
+                   , cinemaFormRating.getCinemaId()
+                   , cinemaFormRating.getCustomerId()
+                   , cinemaFormRating.getCinemaReviewRating()
+                   , cinemaFormRating.getCinemaRatingComment());
 
-         return  cinemaFormRating;
+            return  cinemaFormRating;
+        } catch (DataAccessException e) {
+            throw new FailedToRateCinemaBranch("Failed To Create Rating For Cinema! ");
+        }
     }
 
     @Override
@@ -50,7 +57,16 @@ public class CinemaRatingRepositoryDAO implements ICinemaRatingRepositoryDAO {
     }
 
     @Override
-    public double getAverageRatingForCinemaBranchById(int cinemaId) {
-        return 0;
+    public double getAverageRatingForCinemaBranchById(int cinemaId) throws FailedToRateCinemaBranch {
+        {
+            try {
+
+                return  jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_AVG_RATING_FOR_CINEMA,Double.class,cinemaId);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+                throw new FailedToRateCinemaBranch("Cinema Not Found !");
+            }
+        }
+
     }
 }

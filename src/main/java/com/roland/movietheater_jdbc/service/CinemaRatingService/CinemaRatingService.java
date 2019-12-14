@@ -2,7 +2,10 @@ package com.roland.movietheater_jdbc.service.CinemaRatingService;
 
 
 import com.roland.movietheater_jdbc.model.CinemaRatingForm;
+import com.roland.movietheater_jdbc.model.Customer;
 import com.roland.movietheater_jdbc.repository.CinemaRatingRepository.CinemaRatingRepositoryDAO;
+import com.roland.movietheater_jdbc.service.Customer.CustomerService;
+import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,10 +16,12 @@ public class CinemaRatingService implements ICinemaRatingService {
 
 
     private CinemaRatingRepositoryDAO cinemaRatingRepositoryDAO;
+    private CustomerService customerService;
 
     @Autowired
-    public CinemaRatingService(CinemaRatingRepositoryDAO cinemaRatingRepositoryDAO) {
+    public CinemaRatingService(CinemaRatingRepositoryDAO cinemaRatingRepositoryDAO, CustomerService customerService) {
         this.cinemaRatingRepositoryDAO = cinemaRatingRepositoryDAO;
+        this.customerService = customerService;
     }
 
     @Override
@@ -25,7 +30,10 @@ public class CinemaRatingService implements ICinemaRatingService {
     }
 
     @Override
-    public CinemaRatingForm createRatingFormForCinemaBranch(CinemaRatingForm cinemaFormRating) {
+    public CinemaRatingForm createRatingFormForCinemaBranch(CinemaRatingForm cinemaFormRating) throws FailedToFindAccountException, FailedToRateCinemaBranch {
+        // Checking if customer exist
+        Customer customer = customerService.getCustomerById(cinemaFormRating.getCustomerId());
+        System.out.println(customer.getCustomerUsername());
         return cinemaRatingRepositoryDAO.createRatingFormForCinemaBranch(cinemaFormRating);
     }
 
@@ -35,7 +43,7 @@ public class CinemaRatingService implements ICinemaRatingService {
     }
 
     @Override
-    public double getAverageRatingForCinemaBranchById(int cinemaId) {
+    public double getAverageRatingForCinemaBranchById(int cinemaId) throws FailedToRateCinemaBranch {
         return cinemaRatingRepositoryDAO.getAverageRatingForCinemaBranchById(cinemaId);
     }
 }

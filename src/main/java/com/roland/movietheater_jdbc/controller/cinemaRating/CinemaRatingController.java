@@ -2,7 +2,8 @@ package com.roland.movietheater_jdbc.controller.cinemaRating;
 
 import com.roland.movietheater_jdbc.model.CinemaRatingForm;
 import com.roland.movietheater_jdbc.service.CinemaRatingService.CinemaRatingService;
-import org.apache.coyote.Response;
+import com.roland.movietheater_jdbc.service.CinemaRatingService.FailedToRateCinemaBranch;
+import com.roland.movietheater_jdbc.service.Customer.FailedToFindAccountException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,46 +24,53 @@ public class CinemaRatingController {
 
 
     @GetMapping("/cinemas/{cinemaId}/cinemaRatings")
-    public ResponseEntity getAllRatingForCinemaBranchById(@PathVariable("cinemaId") int cinemaId){
+    public ResponseEntity getAllRatingForCinemaBranchById(@PathVariable("cinemaId") int cinemaId) {
         List<CinemaRatingForm> cinemaRatingFormList = cinemaRatingService.getAllRatingForCinemaBranchById(cinemaId);
         List<CinemaRatingApiResponseForAdminAndUser> responseList = buildApiResponseForCinemaBranchRating(cinemaRatingFormList);
-        return  ResponseEntity.status(HttpStatus.OK).body(responseList);
+        return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
 
     @GetMapping("/cinemas/{cinemaId}/cinemaAvgRating")
-    public ResponseEntity getAverageRatingForCinemaBranchById(@PathVariable("cinemaId") int cinemaId){
-        double cinemaRatingAverage = cinemaRatingService.getAverageRatingForCinemaBranchById(cinemaId);
-         return  ResponseEntity.status(HttpStatus.OK).body(cinemaRatingAverage);
+    public ResponseEntity getAverageRatingForCinemaBranchById(@PathVariable("cinemaId") int cinemaId) {
+        try {
+            double cinemaRatingAverage = cinemaRatingService.getAverageRatingForCinemaBranchById(cinemaId);
+            return ResponseEntity.status(HttpStatus.OK).body(cinemaRatingAverage);
+        } catch (FailedToRateCinemaBranch e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
+        }
     }
 
 
     @PostMapping("/cinemas/{cinemaId}/customers/{customerId}/cinemaRatings")
-        public ResponseEntity createRatingFormForCinemaBranch(@PathVariable("cinemaId") int cinemaId,
-                                                              @PathVariable("customerId") int customerId,
-                                                              @RequestBody CinemaRatingApiRequestForUser request){
+    public ResponseEntity createRatingFormForCinemaBranch(@PathVariable("cinemaId") int cinemaId,
+                                                          @PathVariable("customerId") int customerId,
+                                                          @RequestBody CinemaRatingApiRequestForUser request) {
 
-        CinemaRatingForm cinemaRatingForm = cinemaRatingService.createRatingFormForCinemaBranch(getCinemaFormRating(cinemaId,customerId,request));
-        CinemaRatingApiResponseForAdminAndUser response = getCinemaBranchRatingApiResponse(cinemaRatingForm);
-        return ResponseEntity.status(HttpStatus.OK).body(response);
+        try {
+            CinemaRatingForm cinemaRatingForm = cinemaRatingService.createRatingFormForCinemaBranch(getCinemaFormRating(cinemaId, customerId, request));
+            CinemaRatingApiResponseForAdminAndUser response = getCinemaBranchRatingApiResponse(cinemaRatingForm);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToFindAccountException | FailedToRateCinemaBranch e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
+        }
 
     }
 
     @DeleteMapping("/cinemas/{cinemaId}/customers/{customerId}/cinemaRatings/{cinemaRatingId}")
     public ResponseEntity deleteRatingFormForCinemaBranch(@PathVariable("cinemaId") int cinemaId,
                                                           @PathVariable("customerId") int customerId,
-                                                          @PathVariable("cinemaRatingId") int cinemaRatingId){
+                                                          @PathVariable("cinemaRatingId") int cinemaRatingId) {
 
-        String deletedCinemaRatingForm = cinemaRatingService.deleteRatingFormForCinemaBranchByCustomer(cinemaId,customerId,cinemaRatingId);
+        String deletedCinemaRatingForm = cinemaRatingService.deleteRatingFormForCinemaBranchByCustomer(cinemaId, customerId, cinemaRatingId);
 
         return ResponseEntity.status(HttpStatus.OK).body(deletedCinemaRatingForm);
 
     }
 
 
-
     private CinemaRatingForm getCinemaFormRating(int cinemaId, int customerId, CinemaRatingApiRequestForUser request) {
-        return  new CinemaRatingForm().builder()
+        return new CinemaRatingForm().builder()
                 .cinemaId(cinemaId)
                 .customerId(customerId)
                 .cinemaRatingComment(request.getCinemaRatingComment())
