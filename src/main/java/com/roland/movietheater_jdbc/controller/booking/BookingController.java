@@ -11,10 +11,7 @@ import com.roland.movietheater_jdbc.service.SeatService.FailedToReserveSeatInCin
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +63,7 @@ public class BookingController {
     }
 
 
-    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}//movieEvents/{movieEvent}/rooms/{roomId}/seats/{seatId}/user/{userId}/tickets/{ticketPrice}")
+    @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/movieEvents/{movieEvent}/rooms/{roomId}/seats/{seatId}/user/{userId}/tickets/{ticketPrice}")
     public ResponseEntity reserveSeatForUser(@PathVariable("movieId") int movieId
             , @PathVariable("cinemaId") int cinemaId
             , @PathVariable("movieEvent") int movieEvent
@@ -85,6 +82,22 @@ public class BookingController {
 
 
     }
+
+  /*  @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/movieEvents/{movieEvent}/rooms/{roomId}/seats/{seatId}/user/{userId}/tickets/{ticketPrice}/List")
+    public ResponseEntity reserveListOfSeatsForUser(@PathVariable("movieId") int movieId
+            , @PathVariable("cinemaId") int cinemaId
+            , @PathVariable("movieEvent") int movieEvent
+            , @PathVariable("roomId") int roomId
+            , @PathVariable("seatId") int seatId
+            , @PathVariable("userId") int userId
+            , @PathVariable("ticketPrice") double ticketPrice
+            , @RequestBody ReservationListOfSeatsApiRequest request) {
+
+
+        return null;
+    }
+*/
+
 
 
     private List<CineMovieEventRoomSeatApiResponseForUser> getSeatsAvailableForMovieEventApiResponse(List<CineMovieEventRoomSeat> cineMovieEventRoomSeatList) {
