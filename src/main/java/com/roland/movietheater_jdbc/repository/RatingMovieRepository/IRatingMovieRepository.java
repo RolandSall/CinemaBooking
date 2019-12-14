@@ -12,4 +12,6 @@ public interface IRatingMovieRepository {
     String deleteMovieRatingForMovie(int movieId, int customerId);
 
     MovieRatingForm createRatingForMovie(MovieRatingForm movieRatingForm) throws FailedToRateMovie;
+
+    double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie;
 }

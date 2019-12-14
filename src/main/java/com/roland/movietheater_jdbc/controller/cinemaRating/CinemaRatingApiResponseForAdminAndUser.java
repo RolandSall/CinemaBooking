@@ -1,5 +1,4 @@
-package com.roland.movietheater_jdbc.model;
-
+package com.roland.movietheater_jdbc.controller.cinemaRating;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
@@ -11,7 +10,7 @@ import java.util.Date;
 @Builder
 @Getter
 @Setter
-public class CinemaRatingForm {
+public class CinemaRatingApiResponseForAdminAndUser {
     private  int cinemaRatingFormId;
     private int customerId;
     private int cinemaId;

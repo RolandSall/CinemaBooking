@@ -18,6 +18,7 @@ public class RatingMovieRepository implements IRatingMovieRepository {
 
     private static String SQL_STATEMENT_RATE_A_MOVIE_BY_CUSTOMER = "INSERT INTO movie_rating (customer_ratedId, movie_ratedId, movie_review_rating, movie_review_comment) VALUES (?,?,?,?)";
 
+   private static String SQL_STATEMENT_TO_FIND_THE_AVG_RATING_FOR_MOVIE = "SELECT AVG(movie_review_rating) FROM movie_rating where movie_ratedId = ?";
     @Autowired
     JdbcTemplate jdbcTemplate;
 
@@ -45,8 +46,17 @@ public class RatingMovieRepository implements IRatingMovieRepository {
                     , movieRatingForm.getMovieReviewComment()
             );
             return movieRatingForm;
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
             throw new FailedToRateMovie("Failed To Rate Movie Please Try Again ! ( One Rating Per Movie )");
+        }
+    }
+
+    @Override
+    public double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie {
+        try {
+            return  jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_THE_AVG_RATING_FOR_MOVIE,Integer.class,movieId);
+        } catch (DataAccessException e) {
+            throw new FailedToRateMovie("Movie Not Found !");
         }
     }
 

@@ -12,4 +12,6 @@ public interface IRatingMovieService {
     String deleteMovieRatingForMovie(int movieId, int customerId);
 
     MovieRatingForm createRatingForMovie(MovieRatingForm movieRatingForm) throws FailedToRateMovie, FailedToFindAccountException;
+
+    double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie;
 }

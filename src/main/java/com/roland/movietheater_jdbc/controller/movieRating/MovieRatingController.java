@@ -24,18 +24,29 @@ public class MovieRatingController {
     }
 
 
-    @GetMapping("/admin/movies/{movieId}/ratings")
+    @GetMapping("/admin/movies/{movieId}/movieRatings")
     public ResponseEntity getAllRatingForMovieForAdmin(@PathVariable("movieId") int movieId){
         List<MovieRatingForm> movieRatingFormList = ratingMovieService.findAllRatingForMovie(movieId);
         List<MovieRatingApiResponseForAdmin> responseList = buildResponseForAdmin(movieRatingFormList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
     }
 
-    @GetMapping("/movies/{movieId}/ratings")
+    @GetMapping("/movies/{movieId}/movieRatings")
     public ResponseEntity getAllRatingForMovieForUser(@PathVariable("movieId") int movieId){
         List<MovieRatingForm> movieRatingFormList = ratingMovieService.findAllRatingForMovie(movieId);
         List<MovieRatingApiResponseForUser> responseList = buildResponseForUser(movieRatingFormList);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
+    }
+
+
+    @GetMapping("/movies/{movieId}/movieAvgRatings")
+    public ResponseEntity getAverageRatingForMovieForUser(@PathVariable("movieId") int movieId){
+        try {
+            double movieRatingAverage = ratingMovieService.getAverageRatingForMovieForUser(movieId);
+            return ResponseEntity.status(HttpStatus.OK).body(movieRatingAverage);
+        } catch (FailedToRateMovie e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
+        }
     }
 
     @DeleteMapping("/movies/{movieId}/ratings/customers/{customerId}")

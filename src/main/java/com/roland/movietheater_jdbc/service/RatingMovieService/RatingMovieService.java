@@ -39,4 +39,9 @@ public class RatingMovieService implements  IRatingMovieService{
         System.out.println(customer.getCustomerUsername());
         return ratingMovieRepository.createRatingForMovie(movieRatingForm);
     }
+
+    @Override
+    public double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie {
+        return ratingMovieRepository.getAverageRatingForMovieForUser(movieId);
+    }
 }
