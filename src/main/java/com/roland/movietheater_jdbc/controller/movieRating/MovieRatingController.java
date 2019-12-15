@@ -41,12 +41,10 @@ public class MovieRatingController {
 
     @GetMapping("/movies/{movieId}/movieAvgRatings")
     public ResponseEntity getAverageRatingForMovieForUser(@PathVariable("movieId") int movieId){
-        try {
+
             double movieRatingAverage = ratingMovieService.getAverageRatingForMovieForUser(movieId);
             return ResponseEntity.status(HttpStatus.OK).body(movieRatingAverage);
-        } catch (FailedToRateMovie e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
-        }
+
     }
 
     @DeleteMapping("/movies/{movieId}/ratings/customers/{customerId}")

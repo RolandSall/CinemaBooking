@@ -2,7 +2,6 @@ package com.roland.movietheater_jdbc.repository.CinemaRatingRepository;
 
 import com.roland.movietheater_jdbc.model.CinemaRatingForm;
 import com.roland.movietheater_jdbc.service.CinemaRatingService.FailedToRateCinemaBranch;
-import com.roland.movietheater_jdbc.service.RatingMovieService.FailedToRateMovie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,12 +38,12 @@ public class CinemaRatingRepositoryDAO implements ICinemaRatingRepositoryDAO {
     public CinemaRatingForm createRatingFormForCinemaBranch(CinemaRatingForm cinemaFormRating) throws FailedToRateCinemaBranch {
         try {
             jdbcTemplate.update(SQL_STATEMENT_TO_CREATE_RATING_FOR_CINEMA_BRANCH
-                   , cinemaFormRating.getCinemaId()
-                   , cinemaFormRating.getCustomerId()
-                   , cinemaFormRating.getCinemaReviewRating()
-                   , cinemaFormRating.getCinemaRatingComment());
+                    , cinemaFormRating.getCinemaId()
+                    , cinemaFormRating.getCustomerId()
+                    , cinemaFormRating.getCinemaReviewRating()
+                    , cinemaFormRating.getCinemaRatingComment());
 
-            return  cinemaFormRating;
+            return cinemaFormRating;
         } catch (DataAccessException e) {
             throw new FailedToRateCinemaBranch("Failed To Create Rating For Cinema! ");
         }
@@ -52,21 +51,20 @@ public class CinemaRatingRepositoryDAO implements ICinemaRatingRepositoryDAO {
 
     @Override
     public String deleteRatingFormForCinemaBranchByCustomer(int cinemaId, int customerId, int cinemaRatingId) {
-        jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_RATING_FOR_CINEMABRANCH,cinemaRatingId,cinemaId,customerId);
+        jdbcTemplate.update(SQL_STATEMENT_TO_DELETE_RATING_FOR_CINEMABRANCH, cinemaRatingId, cinemaId, customerId);
         return "Rating Form Have Been Deleted !";
     }
 
     @Override
-    public double getAverageRatingForCinemaBranchById(int cinemaId) throws FailedToRateCinemaBranch {
-        {
-            try {
+    public double getAverageRatingForCinemaBranchById(int cinemaId){
 
-                return  jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_AVG_RATING_FOR_CINEMA,Double.class,cinemaId);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                throw new FailedToRateCinemaBranch("Cinema Not Found !");
-            }
+        try {
+            Double ratingAvg = jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_AVG_RATING_FOR_CINEMA, Double.class, cinemaId);
+            return ratingAvg;
+        } catch (Exception e) {
+            return 0;
         }
+
 
     }
 }

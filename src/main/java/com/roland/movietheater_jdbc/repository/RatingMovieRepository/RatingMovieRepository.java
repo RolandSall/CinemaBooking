@@ -52,11 +52,11 @@ public class RatingMovieRepository implements IRatingMovieRepository {
     }
 
     @Override
-    public double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie {
+    public double getAverageRatingForMovieForUser(int movieId)  {
         try {
             return  jdbcTemplate.queryForObject(SQL_STATEMENT_TO_FIND_THE_AVG_RATING_FOR_MOVIE,Double.class,movieId);
-        } catch (DataAccessException e) {
-            throw new FailedToRateMovie("Movie Not Found !");
+        } catch (Exception e) {
+            return 0;
         }
     }
 

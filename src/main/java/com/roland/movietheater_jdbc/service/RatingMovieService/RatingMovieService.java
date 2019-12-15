@@ -41,7 +41,7 @@ public class RatingMovieService implements  IRatingMovieService{
     }
 
     @Override
-    public double getAverageRatingForMovieForUser(int movieId) throws FailedToRateMovie {
+    public double getAverageRatingForMovieForUser(int movieId)  {
         return ratingMovieRepository.getAverageRatingForMovieForUser(movieId);
     }
 }
