@@ -83,20 +83,7 @@ public class BookingController {
 
     }
 
-  /*  @PostMapping("/booking/movies/{movieId}/cinemas/{cinemaId}/movieEvents/{movieEvent}/rooms/{roomId}/seats/{seatId}/user/{userId}/tickets/{ticketPrice}/List")
-    public ResponseEntity reserveListOfSeatsForUser(@PathVariable("movieId") int movieId
-            , @PathVariable("cinemaId") int cinemaId
-            , @PathVariable("movieEvent") int movieEvent
-            , @PathVariable("roomId") int roomId
-            , @PathVariable("seatId") int seatId
-            , @PathVariable("userId") int userId
-            , @PathVariable("ticketPrice") double ticketPrice
-            , @RequestBody ReservationListOfSeatsApiRequest request) {
 
-
-        return null;
-    }
-*/
 
 
 
