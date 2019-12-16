@@ -19,6 +19,7 @@ public class ReservationMapper implements RowMapper<Reservation> {
        reservation.setRoomName(resultSet.getString("room_type"));
        reservation.setSeatRow(resultSet.getInt("seat_row"));
        reservation.setSeatColumn(resultSet.getInt("seat_column"));
+       reservation.setBookingId(resultSet.getInt("booking_id"));
        reservation.setMovieStartTime(resultSet.getTimestamp("movie_start_time"));
        reservation.setTicketPrice(resultSet.getDouble("ticket_price"));
 

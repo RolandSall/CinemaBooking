@@ -172,6 +172,8 @@ public class BookingController {
                 .cinemaAddress(responseForUser.getCinemaAddress())
                 .roomName(responseForUser.getRoomName())
                 .seatRow(responseForUser.getSeatRow())
+                .bookingId(responseForUser.getBookingId())
+                .movieStartTime(responseForUser.getMovieStartTime())
                 .seatColumn(responseForUser.getSeatColumn())
                 .ticketPrice(responseForUser.getTicketPrice())
                 .build();

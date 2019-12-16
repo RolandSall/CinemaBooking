@@ -12,6 +12,7 @@ import java.util.Date;
 @Setter
 public class Reservation {
     private int customerId;
+    private int bookingId;
     private String customerUsername;
     private String movieName;
     private String cinemaAddress;
