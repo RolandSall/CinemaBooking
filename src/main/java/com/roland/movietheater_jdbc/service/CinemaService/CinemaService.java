@@ -21,6 +21,11 @@ public class CinemaService implements ICinemaService {
     }
 
     @Override
+    public CinemaBranch getCinemaBranchForUserById(int cinemaId) throws FailedToFindCinemaBranchException {
+        return cinemaRepository.getCinemaBranchForUserById(cinemaId);
+    }
+
+    @Override
     public CinemaBranch createCinemaBranch(CinemaBranch cinemaBranch) throws FailedToInsertCinemaException {
         return cinemaRepository.createCinemaBranch(cinemaBranch);
     }
@@ -40,6 +45,8 @@ public class CinemaService implements ICinemaService {
     public void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException {
         cinemaRepository.updateCinemaCapacity(roomCapacity,cinemaId);
     }
+
+
 
 
 }

@@ -16,4 +16,6 @@ public interface ICinemaService {
      CinemaBranch updateCinemaBranch(int  cinemaId, CinemaBranch cinemaBranch) throws FailedToUpdateCinemaException;
 
     void updateCinemaCapacity(int roomCapacity, int cinemaId) throws FailedToInsertRoomInCinemaBranchException;
+
+    CinemaBranch getCinemaBranchForUserById(int cinemaId) throws FailedToFindCinemaBranchException;
 }

@@ -2,6 +2,7 @@ package com.roland.movietheater_jdbc.repository.CinemaRepository;
 
 import com.roland.movietheater_jdbc.model.CinemaBranch;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToDeleteCinemaException;
+import com.roland.movietheater_jdbc.service.CinemaService.FailedToFindCinemaBranchException;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToInsertCinemaException;
 import com.roland.movietheater_jdbc.service.CinemaService.FailedToUpdateCinemaException;
 import com.roland.movietheater_jdbc.service.RoomService.FailedToInsertRoomInCinemaBranchException;
@@ -22,6 +23,7 @@ public class CinemaRepositoryDAO implements ICinemaRepositoryDAO {
     private static final String SQL_STATEMENT_TO_UPDATE_CINEMBRANCH = "update cinemabranch set cinema_name = ? , cinema_address = ? , cinema_phone =? , cinema_manager = ?, cinema_seat_capacity =? where cinema_id = ?";
     private static final String SQL_STATEMENT_TO_UPDATE_CINEMA_BRANCH_SEAT_CAPACITY ="UPDATE cinemabranch SET cinema_seat_capacity = ? WHERE cinema_id = ?";
     private static final String SQL_STATEMENT_TO_FIND_THE_SUM_OF_SEATS_IN_A_CINEMA ="SELECT SUM(room_capacity) from room where cinema_branch = ?";
+    private static final String SQL_STATMENT_TO_FIND_CINEMA_BRANCH_BY_ID ="SELECT * FROM cinemabranch WHERE cinema_id = ?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -40,6 +42,15 @@ public class CinemaRepositoryDAO implements ICinemaRepositoryDAO {
             System.out.println(e.getMessage());
             System.out.println(e.getCause());
             throw new FailedToInsertCinemaException(e, cinemaBranch);
+        }
+    }
+
+    @Override
+    public CinemaBranch getCinemaBranchForUserById(int cinemaId) throws FailedToFindCinemaBranchException {
+        try {
+            return jdbcTemplate.queryForObject(SQL_STATMENT_TO_FIND_CINEMA_BRANCH_BY_ID, new CinemaMapper(),cinemaId);
+        } catch (Exception e) {
+            throw new FailedToFindCinemaBranchException("Cinema Branch Not Found !");
         }
     }
 
@@ -97,6 +108,8 @@ public class CinemaRepositoryDAO implements ICinemaRepositoryDAO {
 
 
     }
+
+
 
 
 }

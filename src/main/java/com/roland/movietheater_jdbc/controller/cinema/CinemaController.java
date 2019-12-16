@@ -1,10 +1,7 @@
 package com.roland.movietheater_jdbc.controller.cinema;
 
 import com.roland.movietheater_jdbc.model.CinemaBranch;
-import com.roland.movietheater_jdbc.service.CinemaService.CinemaService;
-import com.roland.movietheater_jdbc.service.CinemaService.FailedToDeleteCinemaException;
-import com.roland.movietheater_jdbc.service.CinemaService.FailedToInsertCinemaException;
-import com.roland.movietheater_jdbc.service.CinemaService.FailedToUpdateCinemaException;
+import com.roland.movietheater_jdbc.service.CinemaService.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +33,19 @@ public class CinemaController {
     @GetMapping("/cinemas")
     public ResponseEntity<List<CinemaBranchApiResponseForUser>> getCinemaBranchForUser() {
         List<CinemaBranch> cinemaBranches = cinemaService.findAllCinemaBranch();
-        List<CinemaBranchApiResponseForUser> responseList = buildResponseForUser(cinemaBranches);
+        List<CinemaBranchApiResponseForUser> responseList = buildResponsListForUser(cinemaBranches);
         return ResponseEntity.status(HttpStatus.OK).body(responseList);
+    }
+
+    @GetMapping("/cinemas/{cinemaId}")
+    public ResponseEntity getCinemaBranchForUserById(@PathVariable("cinemaId") int cinemaId) {
+        try {
+            CinemaBranch cinemaBranch = cinemaService.getCinemaBranchForUserById(cinemaId);
+            CinemaBranchApiResponseForUser response = getResponseForUser(cinemaBranch);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (FailedToFindCinemaBranchException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getLocalizedMessage());
+        }
     }
 
 
@@ -54,25 +62,24 @@ public class CinemaController {
     }
 
     @DeleteMapping("/admin/cinemas/{cinemaId}")
-     public ResponseEntity deleteCinemaBranch(@PathVariable("cinemaId") int cinemaId) {
+    public ResponseEntity deleteCinemaBranch(@PathVariable("cinemaId") int cinemaId) {
         try {
             int cinemaIdDeleted = cinemaService.deleteCinemaBranch(cinemaId);
-            return  ResponseEntity.status(HttpStatus.OK).body(cinemaIdDeleted);
+            return ResponseEntity.status(HttpStatus.OK).body(cinemaIdDeleted);
         } catch (FailedToDeleteCinemaException e) {
-            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @PutMapping("/admin/cinemas/{cinemaId}")
-    public ResponseEntity updateCinemaBranch(@PathVariable("cinemaId") int cinemaId, @RequestBody CinemaBranchApiRequestForAdmin request){
+    public ResponseEntity updateCinemaBranch(@PathVariable("cinemaId") int cinemaId, @RequestBody CinemaBranchApiRequestForAdmin request) {
         try {
             CinemaBranch cinemaBranch = cinemaService.updateCinemaBranch(cinemaId, getCinemaBranch(request));
             CinemaBranchApiResponseForAdmin response = getCinemaBranchApiResponse(cinemaBranch);
-            return  ResponseEntity.status(HttpStatus.OK).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (FailedToUpdateCinemaException e) {
-           return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
-
 
 
     }
@@ -89,17 +96,22 @@ public class CinemaController {
     }
 
 
-    private List<CinemaBranchApiResponseForUser> buildResponseForUser(List<CinemaBranch> cinemaBranches) {
+    private List<CinemaBranchApiResponseForUser> buildResponsListForUser(List<CinemaBranch> cinemaBranches) {
         List<CinemaBranchApiResponseForUser> responseList = new ArrayList<>();
         for (CinemaBranch cinemaBranch : cinemaBranches) {
-            responseList.add(new CinemaBranchApiResponseForUser().builder()
-                    .cinemaId(cinemaBranch.getCinemaId())
-                    .cinemaName(cinemaBranch.getCinemaName())
-                    .cinemaAddress(cinemaBranch.getCinemaAddress())
-                    .cinemaPhone(cinemaBranch.getCinemaPhone())
-                    .build());
+            responseList.add(getResponseForUser(cinemaBranch));
         }
         return responseList;
+    }
+
+    CinemaBranchApiResponseForUser getResponseForUser(CinemaBranch cinemaBranch) {
+        return new CinemaBranchApiResponseForUser().builder()
+                .cinemaId(cinemaBranch.getCinemaId())
+                .cinemaName(cinemaBranch.getCinemaName())
+                .cinemaAddress(cinemaBranch.getCinemaAddress())
+                .cinemaPhone(cinemaBranch.getCinemaPhone())
+                .build();
+
     }
 
 
