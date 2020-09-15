@@ -1,5 +1,10 @@
-package com.roland.movietheater_jdbc;
+/**
+ * Author: Roland Salloum <roland.salloum00@outlook.com>
+ * Project: An application that helps users to locate movies in different cinema branch
+ *          and book/chose their seats online.
+ */
 
+package com.roland.movietheater_jdbc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
